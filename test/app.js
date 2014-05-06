@@ -1,32 +1,59 @@
 var express = require('express');
-var restberry = require('restberry');
 var mongoose = require('mongoose');
+var passport = require('passport');
+var restberry = require('restberry');
 
-mongoose.connect('mongodb://localhost/test');
+
+var DB = 'mongodb://localhost/npm-restberry-test';
+mongoose.connect(DB);
 
 var app = express();
-restberry.init({
-    apiPath: '/api/v1'
+app.use(express.cookieParser());
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.session({
+    secret: 'restberry secret',
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.listen(5000);
+
+restberry.config({
+    apiPath: '/api/v1',
 });
 
-var port = process.env.NODE_PORT | 5000;
-app.listen(port);
-
-// Test
-
-var parentschema = new mongoose.Schema({
-    name: {type: String},
+var userSchema = new mongoose.Schema({
+    username: {type: String},
+    password: {type: String},
 });
-parent = restberry.model(mongoose, 'Parent', 'Parents', parentschema);
+var userModel = restberry.model(mongoose, 'User', userSchema);
+restberry.routes.create(app, userModel);
+restberry.enableAuth(app, passport, userModel);
 
-var childschema = new mongoose.Schema({
+var parentSchema = new mongoose.Schema({
+    name: {type: String, unique: true},
+});
+var parentModel = restberry.model(mongoose, 'Parent', parentSchema);
+restberry.routes.readMany(app, parentModel);
+restberry.routes.create(app, parentModel);
+restberry.routes.del(app, parentModel);
+
+var childSchema = new mongoose.Schema({
     parent: {type: mongoose.Schema.Types.ObjectId, ref: 'Parent'},
     name: {type: String},
 });
-child = restberry.model(mongoose, 'Child', 'Children', childschema);
+var childModel = restberry.model(mongoose, 'Child', childSchema);
+restberry.routes.read(app, childModel);
+restberry.routes.readMany(app, childModel, parentModel);
+restberry.routes.create(app, childModel, parentModel);
+restberry.routes.del(app, childModel);
 
-restberry.readAPI(app, child);
-restberry.readManyAPI(app, child, parent);
-restberry.createAPI(app, child, parent);
-restberry.readManyAPI(app, parent);
-restberry.createAPI(app, parent);
+var authSchema = new mongoose.Schema({
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    name: {type: String},
+});
+var authModel = restberry.model(mongoose, 'Auth', authSchema);
+restberry.routes.readMany(app, authModel, userModel, true);
+restberry.routes.create(app, authModel, userModel, true);
+
+console.log('running on 5000');

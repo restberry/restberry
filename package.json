@@ -1,11 +1,11 @@
 {
   "name": "restberry",
   "version": "0.1.0",
-  "description": "Set of methods for talking with mongoose and automatically handle errors and logging",
+  "description": "",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/materik/mongoshortcuts.git"
+    "url": "https://github.com/materik/restberry.git"
   },
   "keywords": [
     "express",
@@ -14,11 +14,11 @@
   "author": "Mattias Eriksson <thematerik@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/scottcorgan/mongoshortcuts/issues"
+    "url": "https://github.com/restberry/mongoshortcuts/issues"
   },
   "dependencies": {
     "http-status": "0.1.x",
-    "mongoose": "3.4.x",
+    "passport-local": "1.0.x",
     "underscore": "1.5.x",
     "underscore.string": "2.3.x"
   }
