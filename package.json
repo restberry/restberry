@@ -23,7 +23,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/restberry/mongoshortcuts/issues"
+    "url": "https://github.com/materik/restberry/issues"
   },
   "dependencies": {
     "http-status": "0.1.x",
