@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/materik/restberry.git"
+    "url": "https://github.com/materik/restberry-npm.git"
   },
   "keywords": [
     "express",
@@ -23,9 +23,10 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/materik/restberry/issues"
+    "url": "https://github.com/materik/restberry-npm/issues"
   },
   "dependencies": {
+    "http-requests": "0.1.x",
     "http-status": "0.1.x",
     "passport-local": "1.0.x",
     "underscore": "1.5.x",
