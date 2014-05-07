@@ -1,7 +1,7 @@
 restberry
 =========
 
-Description
+Framework for setting up RESTful APIs.
 
 ## Install
 
