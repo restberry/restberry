@@ -1,10 +1,10 @@
 var httpStatus = require('http-status');
 var mongoose = require('mongoose');
-var requests = require('requests');
+var requests = require('http-requests');
 
 
-var USERNAME = 'test';
-var PASSWORD = 'asdf';
+var EMAIL = 'test@restberry.com';
+var PASSWORD = 'asdfasdf';
 var DB = 'mongodb://localhost/npm-restberry-test';
 requests.config({
     apiPath: '/api/v1',
@@ -78,7 +78,7 @@ exports.testDelete = function(test) {
 };
 
 exports.testUnauthCreate = function(test) {
-    _createUser(USERNAME, PASSWORD, function(userId) {
+    _createUser(EMAIL, PASSWORD, function(userId) {
         var d = {name: 'test'};
         var path = '/users/' + userId + '/auths';
         requests.post(path, d, function(code, json) {
@@ -89,8 +89,8 @@ exports.testUnauthCreate = function(test) {
 };
 
 exports.testAuthCreate = function(test) {
-    _createUser(USERNAME, PASSWORD, function(userId) {
-        _loginUser(USERNAME, PASSWORD, function(userId) {
+    _createUser(EMAIL, PASSWORD, function(userId) {
+        _loginUser(EMAIL, PASSWORD, function(userId) {
             var d = {name: 'test'};
             var path = '/users/' + userId + '/auths';
             requests.post(path, d, function(code, json) {
@@ -102,7 +102,7 @@ exports.testAuthCreate = function(test) {
 };
 
 exports.testUnauthRead = function(test) {
-    _createUser(USERNAME, PASSWORD, function(userId) {
+    _createUser(EMAIL, PASSWORD, function(userId) {
         var d = {name: 'test'};
         var path = '/users/' + userId + '/auths';
         requests.post(path, d, function(code, json) {
@@ -116,8 +116,8 @@ exports.testUnauthRead = function(test) {
 };
 
 exports.testAuthRead = function(test) {
-    _createUser(USERNAME, PASSWORD, function(userId) {
-        _loginUser(USERNAME, PASSWORD, function(userId) {
+    _createUser(EMAIL, PASSWORD, function(userId) {
+        _loginUser(EMAIL, PASSWORD, function(userId) {
             var d = {name: 'test'};
             var path = '/users/' + userId + '/auths';
             requests.post(path, d, function(code, json) {
@@ -133,8 +133,8 @@ exports.testAuthRead = function(test) {
 };
 
 exports.testLogout = function(test) {
-    _createUser(USERNAME, PASSWORD, function(userId) {
-        _loginUser(USERNAME, PASSWORD, function(userId) {
+    _createUser(EMAIL, PASSWORD, function(userId) {
+        _loginUser(EMAIL, PASSWORD, function(userId) {
             var d = {name: 'test'};
             var path = '/users/' + userId + '/auths';
             requests.post(path, d, function(code, json) {
@@ -150,9 +150,9 @@ exports.testLogout = function(test) {
     });
 };
 
-var _createUser = function(username, password, next) {
+var _createUser = function(email, password, next) {
     requests.post('/users', {
-        username: username,
+        email: email,
         password: password,
     }, function(code, json) {
         if (code === httpStatus.CREATED)  next(json.user.id);

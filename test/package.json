@@ -1,10 +1,12 @@
 {
   "dependencies": {
     "express": "3.4.x",
+    "http-requests": "0.1.x",
     "http-status": "0.1.x",
     "mongoose": "3.8.x",
     "nodeunit": "0.8.x",
     "passport": "0.1.x",
+    "restberry": "0.1.x",
     "underscore": "1.5.x"
   }
 }

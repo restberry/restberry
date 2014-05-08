@@ -16,44 +16,39 @@ app.use(express.session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.listen(5000);
 
 restberry.config({
     apiPath: '/api/v1',
+    port: 5000,
 });
+restberry.listen(app);
 
-var userSchema = new mongoose.Schema({
-    username: {type: String},
-    password: {type: String},
-});
-var userModel = restberry.model(mongoose, 'User', userSchema);
-restberry.routes.create(app, userModel);
-restberry.enableAuth(app, passport, userModel);
+restberry.enableAuth(app, passport, mongoose);
+var User = mongoose.model('User');
+restberry.routes.create(app, User);
 
 var parentSchema = new mongoose.Schema({
     name: {type: String, unique: true},
 });
-var parentModel = restberry.model(mongoose, 'Parent', parentSchema);
-restberry.routes.readMany(app, parentModel);
-restberry.routes.create(app, parentModel);
-restberry.routes.del(app, parentModel);
+var Parent = restberry.model(mongoose, 'Parent', parentSchema);
+restberry.routes.readMany(app, Parent);
+restberry.routes.create(app, Parent);
+restberry.routes.del(app, Parent);
 
 var childSchema = new mongoose.Schema({
     parent: {type: mongoose.Schema.Types.ObjectId, ref: 'Parent'},
     name: {type: String},
 });
-var childModel = restberry.model(mongoose, 'Child', childSchema);
-restberry.routes.read(app, childModel);
-restberry.routes.readMany(app, childModel, parentModel);
-restberry.routes.create(app, childModel, parentModel);
-restberry.routes.del(app, childModel);
+var Child = restberry.model(mongoose, 'Child', childSchema);
+restberry.routes.read(app, Child);
+restberry.routes.readMany(app, Child, Parent);
+restberry.routes.create(app, Child, Parent);
+restberry.routes.del(app, Child);
 
 var authSchema = new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     name: {type: String},
 });
-var authModel = restberry.model(mongoose, 'Auth', authSchema);
-restberry.routes.readMany(app, authModel, userModel, true);
-restberry.routes.create(app, authModel, userModel, true);
-
-console.log('running on 5000');
+var Auth = restberry.model(mongoose, 'Auth', authSchema);
+restberry.routes.readMany(app, Auth, User, {authenticate: true});
+restberry.routes.create(app, Auth, User, {authenticate: true});
