@@ -26,6 +26,7 @@
     "url": "https://github.com/materik/restberry-npm/issues"
   },
   "dependencies": {
+    "http-color-logger": "0.1.x",
     "http-requests": "0.1.x",
     "http-status": "0.1.x",
     "passport-local": "1.0.x",
