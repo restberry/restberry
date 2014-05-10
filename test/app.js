@@ -4,8 +4,12 @@ var passport = require('passport');
 var restberry = require('restberry');
 
 
-var DB = 'mongodb://localhost/npm-restberry-test';
+// ----- MONGOOSE -----
+
+var DB = 'mongodb://localhost/restberry-npm';
 mongoose.connect(DB);
+
+// ----- EXPRESS -----
 
 var app = express();
 app.use(express.cookieParser());
@@ -17,38 +21,88 @@ app.use(express.session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// ----- RESTBERRY -----
+
 restberry.config({
     apiPath: '/api/v1',
     port: 5000,
+    verbose: true,
 });
 restberry.listen(app);
 
-restberry.enableAuth(app, passport, mongoose);
-var User = mongoose.model('User');
-restberry.routes.create(app, User);
+// -- BAR --
 
-var parentSchema = new mongoose.Schema({
+var BarSchema = new mongoose.Schema({
     name: {type: String, unique: true},
+    timestampUpdated: {type: Date, default: new Date()},
+    timestampCreated: {type: Date, default: new Date()},
 });
-var Parent = restberry.model(mongoose, 'Parent', parentSchema);
-restberry.routes.readMany(app, Parent);
-restberry.routes.create(app, Parent);
-restberry.routes.del(app, Parent);
+var Bar = restberry.model(mongoose, 'Bar', BarSchema);
 
-var childSchema = new mongoose.Schema({
-    parent: {type: mongoose.Schema.Types.ObjectId, ref: 'Parent'},
-    name: {type: String},
+restberry.routes.read(app, Bar);  // GET /api/v1/bars/:id
+restberry.routes.readMany(app, Bar);  // GET /api/v1/bars
+restberry.routes.create(app, Bar);  // POST /api/v1/bars
+restberry.routes.del(app, Bar);  // DELETE /api/v1/bars/:id
+
+// -- USER --
+
+// Enabling authentication, this will create a User model and have this
+// be connected to the login and logout. You can supply additional fields
+// to your user model or give it a custom usermodel by using
+// restberry.enableAuthWithModel
+restberry.enableAuth(app, passport, mongoose, {
+    name: {
+        first: {type: String},
+        last: {type: String},
+    }
 });
-var Child = restberry.model(mongoose, 'Child', childSchema);
-restberry.routes.read(app, Child);
-restberry.routes.readMany(app, Child, Parent);
-restberry.routes.create(app, Child, Parent);
-restberry.routes.del(app, Child);
+var User = mongoose.model('User');
 
-var authSchema = new mongoose.Schema({
+// POST /api/v1/users
+restberry.routes.create(app, User);
+// GET /api/v1/users?action=me
+restberry.routes.readMany(app, User, null, {
+    authenticate: true,
+    actions: {
+        me: function(req, res, next) {
+            req.expand.push('user');
+            req.user.toJSON(req, res, true, next);
+        },
+    },
+});  
+
+// -- FOO --
+
+// Here we are creating a model which is connected to the User model,
+// if you enable authenticate for the API calls it will verify that you
+// are logged in with the same user before interacting with it.
+var FooSchema = new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     name: {type: String},
 });
-var Auth = restberry.model(mongoose, 'Auth', authSchema);
-restberry.routes.readMany(app, Auth, User, {authenticate: true});
-restberry.routes.create(app, Auth, User, {authenticate: true});
+var Foo = restberry.model(mongoose, 'Foo', FooSchema);
+
+// GET /api/v1/foos/:id
+restberry.routes.read(app, Foo, {
+    authenticate: true,
+});
+// GET /api/v1/users/:id/foos
+restberry.routes.readMany(app, Foo, User, {
+    authenticate: true,
+});
+// POST /api/v1/users/:id/foos
+restberry.routes.create(app, Foo, User, {
+    authenticate: true,
+});
+
+// -- TESTING --
+
+app.get('/api/v1/clearData', function(req, res) {
+    Bar.remove({}, function() {
+        User.remove({}, function() {
+            Foo.remove({}, function() {
+                res.end();
+            });
+        });
+    });
+});
