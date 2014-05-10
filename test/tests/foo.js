@@ -126,8 +126,43 @@ exports.testLogout = function(test) {
     });
 };
 
-var _createLoginUser = function(next) {
-    testlib.createUser(EMAIL, PASSWORD, function(userId) {
-        testlib.loginUser(EMAIL, PASSWORD, next);
+exports.testUnauthReadOtherUser = function(test) {
+    var oldUserId = null;
+    var oldFooId = null;
+    var loginWithNewUser = function() {
+        var path1 = '/users/' + oldUserId + '/foos';
+        var path2 = '/foos/' + oldFooId;
+        testlib.logoutUser(function() {
+            _createLoginUser(function(userId) {
+                testlib.requests.get(path1, function(code, json) {
+                    test.equal(code, httpStatus.UNAUTHORIZED);
+                    testlib.requests.get(path2, function(code, json) {
+                        test.equal(code, httpStatus.UNAUTHORIZED);
+                        test.done();
+                    });
+                });
+            }, 'hej@hej.com');
+        });
+    };
+    _createLoginUser(function(userId) {
+        var d = {name: 'test'};
+        var path = '/users/' + userId + '/foos';
+        oldUserId = userId;
+        testlib.requests.post(path, d, function(code, json) {
+            test.equal(code, httpStatus.CREATED);
+            oldFooId = json.foo.id;
+            testlib.requests.get(path, function(code, json) {
+                test.equal(code, httpStatus.OK);
+                test.equal(json.foos.length, 1);
+                loginWithNewUser();
+            });
+        });
+    });
+};
+
+var _createLoginUser = function(next, email) {
+    email = (email ? email : EMAIL);
+    testlib.createUser(email, PASSWORD, function(userId) {
+        testlib.loginUser(email, PASSWORD, next);
     });
 };

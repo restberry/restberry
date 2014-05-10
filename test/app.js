@@ -95,6 +95,32 @@ restberry.routes.create(app, Foo, User, {
     authenticate: true,
 });
 
+// -- BAZ --
+
+var BazSchema = new mongoose.Schema({
+    name: {type: String},
+    nested: {
+        user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+        foos: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Foo'
+        }],
+    },
+});
+BazSchema.methods.isAuthorized = function(req, res, next) {
+    if (this.nested.user == req.user.id) {
+        next();
+    } else {
+        restberry.errors.throwUnauthorized(req, res, {});
+    }
+};
+var Baz = restberry.model(mongoose, 'Baz', BazSchema);
+
+// POST /api/v1/users/:id/bazs
+restberry.routes.create(app, Baz, User, {
+    authenticate: true,
+});
+
 // -- TESTING --
 
 app.get('/api/v1/clearData', function(req, res) {
