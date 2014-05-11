@@ -49,41 +49,42 @@ restberry.routes.readMany(app, Bar, Foo);  // GET /api/v1/foos/:id/bars
 
 **NOTE:** See more usages in the test app.
 
-## Route Hooks
+## Authentication
 
-When defining routes there are two hooks you can specify for manipulating
-data or handling responses.
+You can enable authentication for you app with the help of the passport npm
+framework. This will automatically create a user model and add login and
+logout API calls that will verify the data against the objects in this model.
 
-```
-preAction = function(req, res, next) { 
-    ...
-    next();
-}
-postAction = function(json, req, res, next) {
-    ...
-    next(json);
-}
-```
-
-You specify the hooks by supplying it to the API definition, with this you can
-also supply:
-
- * **authenticate**: if true, the app will verify that you are logged in and that you have permission to manipulate the object.
- * **actions**: define actions that will happen if an api call is made with the specified query string action.
+Other API calls that have this model as a field and have
+authentication enabled will check that you are logged in as the correct user
+before allowing you to access the object, otherwise it will throw a forbidden
+(403) status response.
 
 ```
-restberry.routes.read(app, Bar, {
-    preAction: function(req, res, next) { ... },
-    postAction: function(json, req, res, next) { ... },
+restberry.enableAuth(app, passport, mongoose);
+var User = mongoose.model('User');
+
+var BazSchema = new mongoose.Schema({
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    name: {type: String},
+});
+var Baz = restberry.model(app, 'Baz', BazSchema);
+
+// POST /api/v1/users/:id/bazs
+restberry.routes.create(app, Baz, User, {
     authenticate: true,
-    actions: {
-        // This action will be triggered if ?action=action-value
-        'action-value': function(req, res, next) { ... },
-    },
 });
 ```
 
-## Response Examples
+**NOTE:** By default the authentication will look for a user field in your model and verify that this matches the logged in user. You can override as such:
+```
+BazSchema.isAuthorized = function(req, res, next) {
+    var authorized = ...  // true or false
+    next(authorized);
+});
+```
+
+## Response examples
 
 All these responses below are automatically handled without needing to write any
 additional code.
@@ -178,6 +179,40 @@ additional code.
     "devMessage": "Requested <POST> </api/v1/bars> with data <{\"name\":\"test\"}>."
   }
 }>
+```
+
+## Route hooks
+
+When defining routes there are two hooks you can specify for manipulating
+data or handling responses.
+
+```
+preAction = function(req, res, next) { 
+    ...
+    next();
+}
+postAction = function(json, req, res, next) {
+    ...
+    next(json);
+}
+```
+
+You specify the hooks by supplying it to the API definition, with this you can
+also supply:
+
+ * **authenticate**: if true, the app will verify that you are logged in and that you have permission to manipulate the object.
+ * **actions**: define actions that will happen if an api call is made with the specified query string action.
+
+```
+restberry.routes.read(app, Bar, {
+    preAction: function(req, res, next) { ... },
+    postAction: function(json, req, res, next) { ... },
+    authenticate: true,
+    actions: {
+        // This action will be triggered if ?action=action-value
+        'action-value': function(req, res, next) { ... },
+    },
+});
 ```
 
 ## Run the tests

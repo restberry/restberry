@@ -110,11 +110,7 @@ var BazSchema = new mongoose.Schema({
     },
 });
 BazSchema.methods.isAuthorized = function(req, res, next) {
-    if (this.nested.user == req.user.id) {
-        next();
-    } else {
-        restberry.errors.throwUnauthorized(req, res, {});
-    }
+    next(this.nested.user == req.user.id);
 };
 var Baz = restberry.model(mongoose, 'Baz', BazSchema);
 
