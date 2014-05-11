@@ -7,7 +7,7 @@ var DB = 'mongodb://localhost/restberry-npm';
 requests.config({
     apiPath: '/api/v1',
     host: 'dev1',
-    port: 5000,
+    port: 6000,
     ssl: false,
     verbose: true,
 });

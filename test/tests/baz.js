@@ -66,7 +66,7 @@ exports.testArray = function(test) {
 
 exports.testArrayExpand = function(test) {
     _createLoginUser(function(userId) {
-        var d1 = {name: 'test'}//, nested: {user: userId}};
+        var d1 = {name: 'test'};
         var path = '/users/' + userId + '/foos';
         testlib.requests.post(path, d1, function(code, json) {
             test.equal(code, httpStatus.CREATED);
@@ -80,7 +80,7 @@ exports.testArrayExpand = function(test) {
                         foos: [foo1, foo2],
                     }
                 };
-                var path = '/users/' + userId + '/bazs?expand=foo';
+                var path = '/users/' + userId + '/bazs?expand=foos';
                 testlib.requests.post(path, d2, function(code, json) {
                     test.equal(code, httpStatus.CREATED);
                     var foos = json.baz.nested.foos;

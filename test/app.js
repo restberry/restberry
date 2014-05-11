@@ -25,7 +25,7 @@ app.use(passport.session());
 
 restberry.config({
     apiPath: '/api/v1',
-    port: 5000,
+    port: 6000,
     verbose: true,
 });
 restberry.listen(app);
