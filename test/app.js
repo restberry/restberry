@@ -34,15 +34,17 @@ restberry.listen(app);
 
 var BarSchema = new mongoose.Schema({
     name: {type: String, unique: true},
-    timestampUpdated: {type: Date, default: new Date()},
-    timestampCreated: {type: Date, default: new Date()},
+    timestampUpdated: {type: Date, default: new Date(), uneditable: true},
+    timestampCreated: {type: Date, default: new Date(), uneditable: true},
 });
 var Bar = restberry.model(mongoose, 'Bar', BarSchema);
 
-restberry.routes.read(app, Bar);  // GET /api/v1/bars/:id
-restberry.routes.readMany(app, Bar);  // GET /api/v1/bars
 restberry.routes.create(app, Bar);  // POST /api/v1/bars
 restberry.routes.del(app, Bar);  // DELETE /api/v1/bars/:id
+restberry.routes.partialUpdate(app, Bar);  // POST /api/v1/bars/:id
+restberry.routes.read(app, Bar);  // GET /api/v1/bars/:id
+restberry.routes.readMany(app, Bar);  // GET /api/v1/bars
+restberry.routes.update(app, Bar);  // PUT /api/v1/bars/:id
 
 // -- USER --
 
@@ -124,11 +126,10 @@ restberry.routes.create(app, Baz, User, {
 // -- TESTING --
 
 app.get('/api/v1/clearData', function(req, res) {
-    Bar.remove({}, function() {
-        User.remove({}, function() {
-            Foo.remove({}, function() {
-                res.end();
-            });
-        });
-    });
+    var models = mongoose.models;
+    var keys = Object.keys(models);
+    restberry.utils.forEachAndDone(keys, function(key, iter) {
+        var model = models[key];
+        model.remove({}, iter);
+    }, res.end);
 });

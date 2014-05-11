@@ -55,3 +55,93 @@ exports.testDelete = function(test) {
         });
     });
 };
+
+exports.testPartialUpdate = function(test) {
+    var name1 = 'test';
+    var d1 = {name: name1};
+    var name2 = 'new test';
+    var d2 = {name: name2};
+    testlib.requests.post('/bars', d1, function(code, json) {
+        test.equal(code, httpStatus.CREATED);
+        test.equal(json.bar.name, name1);
+        var id = json.bar.id;
+        testlib.requests.post('/bars/' + id, d2, function(code, json) {
+            test.equal(code, httpStatus.OK);
+            test.equal(json.bar.name, name2);
+            test.done();
+        });
+    });
+};
+
+exports.testPartialUpdateUneditable = function(test) {
+    var d1 = {name: 'test'};
+    var d2 = {timestampCreated: '2014-05-11T20:57:18.445Z'};
+    testlib.requests.post('/bars', d1, function(code, json) {
+        test.equal(code, httpStatus.CREATED);
+        var id = json.bar.id;
+        testlib.requests.post('/bars/' + id, d2, function(code, json) {
+            test.equal(code, httpStatus.BAD_REQUEST);
+            test.done();
+        });
+    });
+};
+
+exports.testPartialUpdate = function(test) {
+    var name1 = 'test';
+    var d1 = {name: name1};
+    var name2 = 'new test';
+    var d2 = {name: name2};
+    testlib.requests.post('/bars', d1, function(code, json) {
+        test.equal(code, httpStatus.CREATED);
+        test.equal(json.bar.name, name1);
+        var id = json.bar.id;
+        testlib.requests.post('/bars/' + id, d2, function(code, json) {
+            test.equal(code, httpStatus.OK);
+            test.equal(json.bar.name, name2);
+            test.done();
+        });
+    });
+};
+
+exports.testPartialUpdateUneditable = function(test) {
+    var d1 = {name: 'test'};
+    var d2 = {timestampCreated: '2014-05-11T20:57:18.445Z'};
+    testlib.requests.post('/bars', d1, function(code, json) {
+        test.equal(code, httpStatus.CREATED);
+        var id = json.bar.id;
+        testlib.requests.post('/bars/' + id, d2, function(code, json) {
+            test.equal(code, httpStatus.BAD_REQUEST);
+            test.done();
+        });
+    });
+};
+
+exports.testUpdate = function(test) {
+    var name1 = 'test';
+    var d1 = {name: name1};
+    var name2 = 'new test';
+    var d2 = {name: name2};
+    testlib.requests.post('/bars', d1, function(code, json) {
+        test.equal(code, httpStatus.CREATED);
+        test.equal(json.bar.name, name1);
+        var id = json.bar.id;
+        testlib.requests.put('/bars/' + id, d2, function(code, json) {
+            test.equal(code, httpStatus.OK);
+            test.equal(json.bar.name, name2);
+            test.done();
+        });
+    });
+};
+
+exports.testUpdateMissingField = function(test) {
+    var d1 = {name: 'test'};
+    var d2 = {};
+    testlib.requests.post('/bars', d1, function(code, json) {
+        test.equal(code, httpStatus.CREATED);
+        var id = json.bar.id;
+        testlib.requests.put('/bars/' + id, d2, function(code, json) {
+            test.equal(code, httpStatus.BAD_REQUEST);
+            test.done();
+        });
+    });
+};

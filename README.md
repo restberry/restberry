@@ -31,17 +31,20 @@ var FooSchema = new mongoose.Schema({
 });
 var Foo = restberry.model(app, 'Foo', FooSchema);
 
+restberry.routes.create(app, Foo);  // POST /api/v1/foos
+restberry.routes.partialUpdate(app, Foo);  // POST /api/v1/foos/:id
+restberry.routes.update(app, Foo);  // PUT /api/v1/foos/:id
+
 var BarSchema = new mongoose.Schema({
     foo: {type: mongoose.Schema.Types.ObjectId, ref: 'Foo'},
     name: {type: String},
 });
 var Bar = restberry.model(app, 'Bar', BarSchema);
 
-restberry.routes.create(app, Foo);  // POST /api/v1/foos
-restberry.routes.read(app, Bar);  // GET /api/v1/bars/:id
-restberry.routes.readMany(app, Bar, Foo);  // GET /api/v1/foos/:id/bars
 restberry.routes.create(app, Bar, Foo);  // POST /api/v1/foos/:id/bars
 restberry.routes.del(app, Bar);  // DELETE /api/v1/bars/:id
+restberry.routes.read(app, Bar);  // GET /api/v1/bars/:id
+restberry.routes.readMany(app, Bar, Foo);  // GET /api/v1/foos/:id/bars
 ```
 
 **NOTE:** See more usages in the test app.
