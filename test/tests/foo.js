@@ -135,9 +135,9 @@ exports.testUnauthReadOtherUser = function(test) {
         testlib.logoutUser(function() {
             _createLoginUser(function(userId) {
                 testlib.requests.get(path1, function(code, json) {
-                    test.equal(code, httpStatus.UNAUTHORIZED);
+                    test.equal(code, httpStatus.FORBIDDEN);
                     testlib.requests.get(path2, function(code, json) {
-                        test.equal(code, httpStatus.UNAUTHORIZED);
+                        test.equal(code, httpStatus.FORBIDDEN);
                         test.done();
                     });
                 });
