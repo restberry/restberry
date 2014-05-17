@@ -8,6 +8,41 @@ var PASSWORD = 'asdfasdf';
 exports.setUp = testlib.setupTeardown;
 exports.tearDown = testlib.setupTeardown;
 
+exports.testReadMany = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        testlib.createAndLoginUser('a' + EMAIL, PASSWORD, function(userId) {
+            testlib.requests.get('/users', function(code, json) {
+                test.equal(code, httpStatus.OK);
+                test.equal(json.users.length, 2);
+                for (var i in json.users) {
+                    var user = json.users[i];
+                    test.ok(user.id);
+                    test.ok(!user.username);
+                }
+                test.done();
+            });
+        });
+    });
+};
+
+exports.testReadManyExpand = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        testlib.createAndLoginUser('a' + EMAIL, PASSWORD, function(userId) {
+            var qs = '?expand=user';
+            testlib.requests.get('/users' + qs, function(code, json) {
+                test.equal(code, httpStatus.OK);
+                test.equal(json.users.length, 2);
+                for (var i in json.users) {
+                    var user = json.users[i];
+                    test.ok(user.id);
+                    test.ok(user.username);
+                }
+                test.done();
+            });
+        });
+    });
+};
+
 exports.testCreate = function(test) {
     testlib.requests.post('/users', {
         email: EMAIL,
