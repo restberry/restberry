@@ -21,6 +21,21 @@ exports.testCreate = function(test) {
     });
 };
 
+exports.testCreateWithUsername = function(test) {
+    var username = 'test';
+    testlib.requests.post('/users', {
+        username: username,
+        email: EMAIL,
+        password: PASSWORD,
+    }, function(code, json) {
+        test.equal(code, httpStatus.CREATED);
+        test.equal(json.user.username, username);
+        test.equal(json.user.email, EMAIL);
+        test.equal(json.user.password, '**********');
+        test.done();
+    });
+};
+
 exports.testCreateConflict = function(test) {
     var d = {
         email: EMAIL,
@@ -60,6 +75,36 @@ exports.testActionMe = function(test) {
             testlib.requests.get(path, function(code, json) {
                 test.equal(code, httpStatus.OK);
                 test.equal(json.user.id, userId);
+                test.done();
+            });
+        });
+    });
+};
+
+exports.testLogin = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        testlib.requests.post('/login', {
+            username: EMAIL,
+            password: PASSWORD,
+        }, function(code) {
+            test.equal(code, httpStatus.OK);
+            test.done();
+        });
+    });
+};
+
+exports.testWrongLogin = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        testlib.requests.post('/login', {
+            username: 'x' + EMAIL,
+            password: PASSWORD,
+        }, function(code) {
+            test.equal(code, httpStatus.BAD_REQUEST);
+            testlib.requests.post('/login', {
+                username: EMAIL,
+                password: 'x' + PASSWORD,
+            }, function(code) {
+                test.equal(code, httpStatus.BAD_REQUEST);
                 test.done();
             });
         });

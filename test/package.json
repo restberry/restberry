@@ -8,5 +8,9 @@
     "passport": "0.1.x",
     "restberry": "0.1.x",
     "underscore": "1.5.x"
+  },
+  "scripts": {
+    "start": "node app",
+    "test": "./node_modules/nodeunit/bin/nodeunit tests/"
   }
 }
