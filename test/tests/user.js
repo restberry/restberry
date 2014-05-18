@@ -51,7 +51,7 @@ exports.testCreate = function(test) {
         test.equal(code, httpStatus.CREATED);
         test.equal(json.user.username, EMAIL);
         test.equal(json.user.email, EMAIL);
-        test.equal(json.user.password, '**********');
+        test.ok(!json.user.password);
         test.done();
     });
 };
@@ -66,7 +66,7 @@ exports.testCreateWithUsername = function(test) {
         test.equal(code, httpStatus.CREATED);
         test.equal(json.user.username, username);
         test.equal(json.user.email, EMAIL);
-        test.equal(json.user.password, '**********');
+        test.ok(!json.user.password);
         test.done();
     });
 };
@@ -141,6 +141,19 @@ exports.testWrongLogin = function(test) {
             }, function(code) {
                 test.equal(code, httpStatus.BAD_REQUEST);
                 test.done();
+            });
+        });
+    });
+};
+
+exports.testLogout = function(test) {
+    testlib.createAndLoginUser(EMAIL, PASSWORD, function(userId) {
+        testlib.logoutUser(function() {
+            testlib.requests.get('/users?action=me', function(code, json) {
+                test.equal(code, httpStatus.UNAUTHORIZED);
+                testlib.logoutUser(function() {
+                    test.done();
+                });
             });
         });
     });

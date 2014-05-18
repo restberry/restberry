@@ -1,6 +1,6 @@
 {
   "name": "restberry",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Framework for setting up RESTful APIs.",
   "main": "index.js",
   "repository": {
