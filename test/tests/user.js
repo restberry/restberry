@@ -10,7 +10,7 @@ exports.tearDown = testlib.setupTeardown;
 
 exports.testReadMany = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
-        testlib.createAndLoginUser('a' + EMAIL, PASSWORD, function(userId) {
+        testlib.createUser('a' + EMAIL, PASSWORD, function(userId) {
             testlib.requests.get('/users', function(code, json) {
                 test.equal(code, httpStatus.OK);
                 test.equal(json.users.length, 2);
@@ -27,7 +27,7 @@ exports.testReadMany = function(test) {
 
 exports.testReadManyExpand = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
-        testlib.createAndLoginUser('a' + EMAIL, PASSWORD, function(userId) {
+        testlib.createUser('a' + EMAIL, PASSWORD, function(userId) {
             var qs = '?expand=user';
             testlib.requests.get('/users' + qs, function(code, json) {
                 test.equal(code, httpStatus.OK);
@@ -118,12 +118,14 @@ exports.testActionMe = function(test) {
 
 exports.testLogin = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
-        testlib.requests.post('/login', {
-            username: EMAIL,
-            password: PASSWORD,
-        }, function(code) {
-            test.equal(code, httpStatus.OK);
-            test.done();
+        testlib.logoutUser(function() {
+            testlib.requests.post('/login', {
+                username: EMAIL,
+                password: PASSWORD,
+            }, function(code) {
+                test.equal(code, httpStatus.OK);
+                test.done();
+            });
         });
     });
 };
@@ -147,7 +149,7 @@ exports.testWrongLogin = function(test) {
 };
 
 exports.testLogout = function(test) {
-    testlib.createAndLoginUser(EMAIL, PASSWORD, function(userId) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
         testlib.logoutUser(function() {
             testlib.requests.get('/users?action=me', function(code, json) {
                 test.equal(code, httpStatus.UNAUTHORIZED);

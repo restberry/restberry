@@ -9,7 +9,7 @@ exports.setUp = testlib.setupTeardown;
 exports.tearDown = testlib.setupTeardown;
 
 exports.testReadMany = function(test) {
-    _createLoginUser(function(userId) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d1 = {name: 'test1'};
         var d2 = {name: 'test2'};
         var path = '/users/' + userId + '/foos';
@@ -34,7 +34,7 @@ exports.testReadMany = function(test) {
 };
 
 exports.testReadManyExpand = function(test) {
-    _createLoginUser(function(userId) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d1 = {name: 'test1'};
         var d2 = {name: 'test2'};
         var path = '/users/' + userId + '/foos?expand=foo';
@@ -60,17 +60,19 @@ exports.testReadManyExpand = function(test) {
 
 exports.testUnauthCreate = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
-        var d = {name: 'test'};
-        var path = '/users/' + userId + '/foos';
-        testlib.requests.post(path, d, function(code, json) {
-            test.equal(code, httpStatus.UNAUTHORIZED);
-            test.done();
+        testlib.logoutUser(function() {
+            var d = {name: 'test'};
+            var path = '/users/' + userId + '/foos';
+            testlib.requests.post(path, d, function(code, json) {
+                test.equal(code, httpStatus.UNAUTHORIZED);
+                test.done();
+            });
         });
     });
 };
 
 exports.testAuthCreate = function(test) {
-    _createLoginUser(function(userId) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {name: 'test'};
         var path = '/users/' + userId + '/foos';
         testlib.requests.post(path, d, function(code, json) {
@@ -83,20 +85,22 @@ exports.testAuthCreate = function(test) {
 
 exports.testUnauthRead = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
-        var d = {name: 'test'};
-        var path = '/users/' + userId + '/foos';
-        testlib.requests.post(path, d, function(code, json) {
-            test.equal(code, httpStatus.UNAUTHORIZED);
-            testlib.requests.get(path, function(code, json) {
+        testlib.logoutUser(function() {
+            var d = {name: 'test'};
+            var path = '/users/' + userId + '/foos';
+            testlib.requests.post(path, d, function(code, json) {
                 test.equal(code, httpStatus.UNAUTHORIZED);
-                test.done();
+                testlib.requests.get(path, function(code, json) {
+                    test.equal(code, httpStatus.UNAUTHORIZED);
+                    test.done();
+                });
             });
         });
     });
 };
 
 exports.testAuthRead = function(test) {
-    _createLoginUser(function(userId) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {name: 'test'};
         var path = '/users/' + userId + '/foos';
         testlib.requests.post(path, d, function(code, json) {
@@ -111,7 +115,7 @@ exports.testAuthRead = function(test) {
 };
 
 exports.testLogout = function(test) {
-    _createLoginUser(function(userId) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {name: 'test'};
         var path = '/users/' + userId + '/foos';
         testlib.requests.post(path, d, function(code, json) {
@@ -133,7 +137,7 @@ exports.testUnauthReadOtherUser = function(test) {
         var path1 = '/users/' + oldUserId + '/foos';
         var path2 = '/foos/' + oldFooId;
         testlib.logoutUser(function() {
-            _createLoginUser(function(userId) {
+            testlib.createUser('hej@hej.com', PASSWORD, function(userId) {
                 testlib.requests.get(path1, function(code, json) {
                     test.equal(code, httpStatus.FORBIDDEN);
                     testlib.requests.get(path2, function(code, json) {
@@ -141,10 +145,10 @@ exports.testUnauthReadOtherUser = function(test) {
                         test.done();
                     });
                 });
-            }, 'hej@hej.com');
+            });
         });
     };
-    _createLoginUser(function(userId) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {name: 'test'};
         var path = '/users/' + userId + '/foos';
         oldUserId = userId;
@@ -157,12 +161,5 @@ exports.testUnauthReadOtherUser = function(test) {
                 loginWithNewUser();
             });
         });
-    });
-};
-
-var _createLoginUser = function(next, email) {
-    email = (email ? email : EMAIL);
-    testlib.createUser(email, PASSWORD, function(userId) {
-        testlib.loginUser(email, PASSWORD, next);
     });
 };

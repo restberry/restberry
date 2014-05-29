@@ -38,13 +38,6 @@ exports.loginUser = function(username, password, next) {
     });
 };
 
-exports.createAndLoginUser = function(email, password, next) {
-    var self = this;
-    self.createUser(email, password, function() {
-        self.loginUser(email, password, next);
-    });
-};
-
 exports.logoutUser = function(next) {
     requests.get('/logout', function(code) {
         if (code === httpStatus.NO_CONTENT)  next();

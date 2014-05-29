@@ -10,17 +10,19 @@ exports.tearDown = testlib.setupTeardown;
 
 exports.testUnauthCreate = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
-        var d = {name: 'test'};
-        var path = '/users/' + userId + '/bazs';
-        testlib.requests.post(path, d, function(code, json) {
-            test.equal(code, httpStatus.UNAUTHORIZED);
-            test.done();
+        testlib.logoutUser(function() {
+            var d = {name: 'test'};
+            var path = '/users/' + userId + '/bazs';
+            testlib.requests.post(path, d, function(code, json) {
+                test.equal(code, httpStatus.UNAUTHORIZED);
+                test.done();
+            });
         });
     });
 };
 
 exports.testAuthCreate = function(test) {
-    _createLoginUser(function(userId) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {name: 'test'};
         var path = '/users/' + userId + '/bazs';
         testlib.requests.post(path, d, function(code, json) {
@@ -32,7 +34,7 @@ exports.testAuthCreate = function(test) {
 };
 
 exports.testArray = function(test) {
-    _createLoginUser(function(userId) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d1 = {name: 'test'}//, nested: {user: userId}};
         var path = '/users/' + userId + '/foos';
         testlib.requests.post(path, d1, function(code, json) {
@@ -65,7 +67,7 @@ exports.testArray = function(test) {
 };
 
 exports.testArrayExpand = function(test) {
-    _createLoginUser(function(userId) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d1 = {name: 'test'};
         var path = '/users/' + userId + '/foos';
         testlib.requests.post(path, d1, function(code, json) {
@@ -94,12 +96,5 @@ exports.testArrayExpand = function(test) {
                 });
             });
         });
-    });
-};
-
-var _createLoginUser = function(next, email) {
-    email = (email ? email : EMAIL);
-    testlib.createUser(email, PASSWORD, function(userId) {
-        testlib.loginUser(email, PASSWORD, next);
     });
 };
