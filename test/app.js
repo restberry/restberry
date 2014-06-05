@@ -62,6 +62,8 @@ var User = mongoose.model('User');
 
 // POST /api/v1/users
 restberry.routes.create(app, User);
+// POST /api/v1/users/:id
+restberry.routes.partialUpdate(app, User);
 // GET /api/v1/users?action=me
 restberry.routes.readMany(app, User, null, {
     authenticate: true,

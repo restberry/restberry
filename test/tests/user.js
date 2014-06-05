@@ -160,3 +160,29 @@ exports.testLogout = function(test) {
         });
     });
 };
+
+exports.testUpdateIllegalPassword = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        var d = {password: 'bajs'};
+        var path = '/users/' + userId;
+        testlib.requests.post(path, d, function(code, json) {
+            test.equal(code, httpStatus.BAD_REQUEST);
+            testlib.loginUser(EMAIL, PASSWORD, function() {
+                test.done();
+            });
+        });
+    });
+};
+
+exports.testUpdatePassword = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        var d = {password: 'bajsbajs'};
+        var path = '/users/' + userId;
+        testlib.requests.post(path, d, function(code, json) {
+            test.equal(code, httpStatus.OK);
+            testlib.loginUser(EMAIL, d.password, function() {
+                test.done();
+            });
+        });
+    });
+};
