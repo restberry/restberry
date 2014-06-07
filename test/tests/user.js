@@ -161,6 +161,38 @@ exports.testLogout = function(test) {
     });
 };
 
+exports.testUpdateUsername = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        var d = {username: 'bajs'};
+        var path = '/users/' + userId;
+        testlib.requests.post(path, d, function(code, json) {
+            test.equal(code, httpStatus.OK);
+            testlib.loginUser(d.username, PASSWORD, function() {
+                test.done();
+            });
+        });
+    });
+};
+
+exports.testUpdateName = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        var d = {name: {first: 'first', last: 'last'}};
+        var path = '/users/' + userId;
+        testlib.requests.post(path, d, function(code, json) {
+            test.equal(code, httpStatus.OK);
+            test.equal(json.user.name.first, 'first');
+            test.equal(json.user.name.last, 'last');
+            var d = {name: {first: '', last: ''}};
+            testlib.requests.post(path, d, function(code, json) {
+                test.equal(code, httpStatus.OK);
+                test.equal(json.user.name.first, '');
+                test.equal(json.user.name.last, '');
+                test.done();
+            });
+        });
+    });
+};
+
 exports.testUpdateIllegalPassword = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {password: 'bajs'};
