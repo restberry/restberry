@@ -6,6 +6,12 @@ calls without needing to write any code (see Usage). All API calls will handle
 and identify issues and throw necessary HTTP responses and easy to debug error
 responses:
 
+## Contact
+
+I'm really interested to here what you guys think of Restberry, especially if
+you have any suggestions to improve the package. Please contact me at
+thematerik@gmail.com.
+
 ## Install
 
 ```
