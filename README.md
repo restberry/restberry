@@ -1,16 +1,11 @@
-restberry
+Restberry
 =========
 
 Framework for setting up RESTful APIs. Define your models and setup CRUD API
 calls without needing to write any code (see Usage). All API calls will handle
 and identify issues and throw necessary HTTP responses and easy to debug error
-responses:
-
-## Contact
-
-I'm really interested to here what you guys think of Restberry, especially if
-you have any suggestions to improve the package. Please contact me at
-thematerik@gmail.com.
+responses. Restberry also handles authentication and permission checks and
+throws appropriate errors.
 
 ## Install
 
@@ -89,6 +84,28 @@ BazSchema.isAuthorized = function(req, res, next) {
     next(authorized);
 });
 ```
+
+**Google Authenctication:**
+
+You can choose to authenticate with Google by passing in your ClientId and
+ClientSecret like so:
+
+```
+restberry.config({
+    auth: {
+        clientID: <CLIENT_ID>,
+        clientSecret: <CLIENT_SECRET>,
+        callbackHost: 'http://localhost',
+        returnURL: '/home',
+    },
+    apiPath: '/api/v1',
+    port: 5000,
+});
+restberry.enableAuthWithGoogle(app, passport, mongoose);
+```
+
+This will create a User object containing googleId, email, name, avatar and
+gender.
 
 ## Response examples
 
@@ -230,3 +247,9 @@ $ ./node_modules/nodeunit/bin/nodeunit ./tests
 ```
 
 **NOTE:** Don't forget to run the test app: $ node app
+
+## Contact
+
+I'm really interested to here what you guys think of Restberry, especially if
+you have any suggestions to improve the package. Please contact me at
+thematerik@gmail.com.
