@@ -104,7 +104,7 @@ restberry.config({
 restberry.enableAuthWithGoogle(app, passport, mongoose);
 ```
 
-This will create a User object containing googleId, email, name, avatar and
+This will create a User object containing googleId, email, name, image and
 gender.
 
 ## Response examples
