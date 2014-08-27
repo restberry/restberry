@@ -30,6 +30,7 @@
         "restberry-express": "0.1.x",
         "restberry-logger": "0.1.x",
         "restberry-mongoose": "0.1.x",
+        "restberry-router": "0.1.x",
         "restberry-utils": "0.1.x",
         "underscore": "1.5.x"
     },
