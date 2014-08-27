@@ -1,38 +1,37 @@
 {
-  "name": "restberry",
-  "version": "0.1.24",
-  "description": "Framework for setting up RESTful APIs.",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/materik/restberry-npm.git"
-  },
-  "keywords": [
-    "express",
-    "mongoose"
-  ],
-  "author": {
-    "name": "Mattias Eriksson",
-    "email": "materik@me.com"
-  },
-  "contributors": [
-    {
-      "name": "Mattias Eriksson",
-      "email": "materik@me.com"
-    }
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/materik/restberry-npm/issues"
-  },
-  "dependencies": {
-    "http-color-logger": "0.1.x",
-    "http-requests": "0.1.x",
-    "http-status": "0.1.x",
-    "passport-google-oauth": "0.1.x",
-    "passport-local": "1.0.x",
-    "underscore": "1.5.x",
-    "underscore.string": "2.3.x"
-  },
-  "homepage": "http://restberry.com"
+    "name": "restberry",
+    "version": "0.2.0",
+    "description": "Framework for setting up RESTful APIs.",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/materik/restberry.git"
+    },
+    "keywords": [
+        "express",
+        "mongoose",
+        "restberry"
+    ],
+    "author": {
+        "name": "Mattias Eriksson",
+        "email": "materik@me.com"
+    },
+    "contributors": [
+        {
+            "name": "Mattias Eriksson",
+            "email": "materik@me.com"
+        }
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/materik/restberry/issues"
+    },
+    "dependencies": {
+        "restberry-express": "0.1.x",
+        "restberry-logger": "0.1.x",
+        "restberry-mongoose": "0.1.x",
+        "restberry-utils": "0.1.x",
+        "underscore": "1.5.x"
+    },
+    "homepage": "http://restberry.com"
 }
