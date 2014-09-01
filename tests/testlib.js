@@ -29,9 +29,9 @@ exports.createUser = function(email, password, next) {
     });
 };
 
-exports.loginUser = function(username, password, next) {
+exports.loginUser = function(email, password, next) {
     requests.post('/login', {
-        username: username,
+        email: email,
         password: password,
     }, function(code, json) {
         if (code === httpStatus.OK)  next(json.user.id);

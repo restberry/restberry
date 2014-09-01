@@ -2,15 +2,13 @@ var restberry = require('restberry');
 var utils = require('restberry-utils');
 
 
-var DB = 'mongodb://localhost/restberry';
-
 restberry
     .config({
         apiPath: '/api/v1',
         port: process.env.NODE_PORT || 6000,
         verbose: true,
     })
-    .web.useExpress(function(web) {
+    .useExpress(function(web) {
         var app = web.app;
         var express = web.express;
         app.configure(function() {
@@ -22,8 +20,8 @@ restberry
             }));
         });
     })
-    .orm.useMongoose(function(orm) {
-        orm.mongoose.connect(DB);
+    .useMongoose(function(orm) {
+        orm.connect('mongodb://localhost/restberry-test');
     })
 
 restberry
@@ -42,23 +40,28 @@ restberry
             app.use(passport.session());
         });
 
+var ObjectId = restberry.orm.mongoose.Schema.Types.ObjectId;
+
 // -- USER --
 
-restberry.orm.model('User')
+restberry.model('User')
+    .setLoginRequired()
     .routes
-        .addCreate()  // POST /api/v1/users
+        .addCreate({
+            loginRequired: false,
+        })  // POST /api/v1/users
         .addPartialUpdate()  // POST /api/v1/users/:id
         .addReadMany()  // GET /api/v1/users
-            .addAction('me', {  // GET /api/v1/users?action=me
+            .addAction('me', {
                 action: function(req, res, next) {
                     req.expand.push('user');
                     req.user.toJSON(req, res, true, next);
                 },
-            })
+            })  // GET /api/v1/users?action=me
 
 // -- BAR --
 
-restberry.orm.model('Bar')
+restberry.model('Bar')
     .setSchema({
         name: {type: String, unique: true},
         timestampUpdated: {type: Date, default: new Date(), uneditable: true},
@@ -66,7 +69,7 @@ restberry.orm.model('Bar')
     })
     .apply();
 
-restberry.orm.model('Bar')
+restberry.model('Bar')
     .routes
         .addCreate()  // POST /api/v1/bars
         .addDelete()  // DELETE /api/v1/bars/:id
@@ -77,32 +80,33 @@ restberry.orm.model('Bar')
 
 // -- FOO --
 
-restberry.orm.model('Foo')
+restberry.model('Foo')
     .setSchema({
-        user: {type: restberry.orm.mongoose.Schema.Types.ObjectId, ref: 'User'},
+        user: {type: ObjectId, ref: 'User'},
         name: {type: String},
     })
     .apply();
 
-restberry.orm.model('Foo')
+restberry.model('Foo')
+    .setLoginRequired()
     .routes
-        .addCreate({  // POST /api/v1/users/:id/foos
-            parentModel: restberry.orm.model('User'),
-        })
+        .addCreate({
+            parentModel: restberry.model('User'),
+        })  // POST /api/v1/users/:id/foos
         .addRead()  // GET /api/v1/foos/:id
-        .addReadMany({  // GET /api/v1/users/:id/foos
-            parentModel: restberry.orm.model('User'),
-        })
+        .addReadMany({
+            parentModel: restberry.model('User'),
+        })  // GET /api/v1/users/:id/foos
 
 // -- BAZ --
 
-restberry.orm.model('Baz')
+restberry.model('Baz')
     .setSchema({
         name: {type: String},
         nested: {
-            user: {type: restberry.orm.mongoose.Schema.Types.ObjectId, ref: 'User'},
+            user: {type: ObjectId, ref: 'User'},
             foos: [{
-                type: restberry.orm.mongoose.Schema.Types.ObjectId,
+                type: ObjectId,
                 ref: 'Foo'
             }],
         },
@@ -112,9 +116,12 @@ restberry.orm.model('Baz')
     })
     .apply();
 
-restberry.orm.model('Baz')
+restberry.model('Baz')
+    .setLoginRequired()
     .routes
-        .addCreate()  // POST /api/v1/users/:id/bazs
+        .addCreate({
+            parentModel: restberry.model('User'),
+        })  // POST /api/v1/users/:id/bazs
 
 // -- TESTING --
 
@@ -125,9 +132,15 @@ restberry.routes.addCustom({
         var keys = Object.keys(models);
         utils.forEachAndDone(keys, function(key, iter) {
             var model = models[key];
-            model.remove({}, iter);
-        }, res.end);
+            model.remove(function() {
+                iter();
+            });
+        }, function() {
+           restberry.web.handleRes({}, req, res, next);
+        });
     },
 });
 
-restberry.web.listen('restberry-test');
+// -- WEB --
+
+restberry.listen('restberry-test');
