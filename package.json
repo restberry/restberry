@@ -35,5 +35,8 @@
         "restberry-utils": "0.1.x",
         "underscore": "1.5.x"
     },
-    "homepage": "http://restberry.com"
+    "homepage": "http://restberry.com",
+    "scripts": {
+        "test": "./tests/run_tests.sh"
+    }
 }
