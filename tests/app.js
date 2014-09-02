@@ -1,4 +1,7 @@
 var restberry = require('restberry');
+var RestberryExpress = require('restberry-express');
+var RestberryMongoose = require('restberry-mongoose');
+
 var utils = require('restberry-utils');
 
 
@@ -8,9 +11,9 @@ restberry
         port: process.env.NODE_PORT || 6000,
         verbose: true,
     })
-    .useExpress(function(web) {
-        var app = web.app;
-        var express = web.express;
+    .use(new RestberryExpress(function(waf) {
+        var app = waf.app;
+        var express = waf.express;
         app.configure(function() {
             app.use(express.cookieParser());
             app.use(express.json());
@@ -19,10 +22,10 @@ restberry
                 secret: 'restberry secret',
             }));
         });
-    })
-    .useMongoose(function(orm) {
-        orm.connect('mongodb://localhost/restberry-test');
-    })
+    }))
+    .use(new RestberryMongoose(function(odm) {
+        odm.connect('mongodb://localhost/restberry-test');
+    }))
 
 restberry
     .auth
@@ -34,13 +37,13 @@ restberry
                 },
             },
         })
-        .apply(function(web, passport) {
-            var app = web.app;
+        .apply(function(waf, passport) {
+            var app = waf.app;
             app.use(passport.initialize());
             app.use(passport.session());
         });
 
-var ObjectId = restberry.orm.mongoose.Schema.Types.ObjectId;
+var ObjectId = restberry.odm.mongoose.Schema.Types.ObjectId;
 
 // -- USER --
 
@@ -128,7 +131,7 @@ restberry.model('Baz')
 restberry.routes.addCustom({
     path: '/clearData',
     action: function(req, res, next) {
-        var models = restberry.orm.mongoose.models;
+        var models = restberry.odm.mongoose.models;
         var keys = Object.keys(models);
         utils.forEachAndDone(keys, function(key, iter) {
             var model = models[key];
@@ -136,7 +139,7 @@ restberry.routes.addCustom({
                 iter();
             });
         }, function() {
-           restberry.web.handleRes({}, req, res, next);
+           restberry.waf.handleRes({}, req, res, next);
         });
     },
 });
