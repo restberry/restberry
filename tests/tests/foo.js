@@ -90,7 +90,7 @@ exports.testReadManyFieldsNested = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d1 = {name: 'test1'};
         var d2 = {name: 'test2'};
-        var qs = '?expand=foo,user&fields=user,username';
+        var qs = '?expand=foo,user&fields=user,email';
         var path = '/users/' + userId + '/foos' + qs;
         testlib.requests.post(path, d1, function(code, json) {
             test.equal(code, httpStatus.CREATED);
@@ -103,8 +103,8 @@ exports.testReadManyFieldsNested = function(test) {
                         var foo = json.foos[i];
                         test.ok(foo.id);
                         test.ok(foo.user);
-                        test.ok(foo.user.username);
-                        test.ok(!foo.user.email);
+                        test.ok(foo.user.email);
+                        test.ok(!foo.user.timestampCreated);
                     }
                     test.ok(json.hrefs.current);
                     test.done();

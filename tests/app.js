@@ -1,7 +1,8 @@
 var restberry = require('restberry');
-var RestberryExpress = require('restberry-express');
-var RestberryMongoose = require('restberry-mongoose');
-
+var restberryExpress = require('restberry-express');
+var restberryMongoose = require('restberry-mongoose');
+var restberryAuth = require('restberry-auth');
+var restberryAuthLocal = require('restberry-auth-local');
 var utils = require('restberry-utils');
 
 
@@ -11,68 +12,66 @@ restberry
         port: process.env.NODE_PORT || 6000,
         verbose: true,
     })
-    .use(new RestberryExpress(function(waf) {
+    .use(restberryExpress.use(function(waf) {
         var app = waf.app;
         var express = waf.express;
-        app.configure(function() {
-            app.use(express.cookieParser());
-            app.use(express.json());
-            app.use(express.urlencoded());
-            app.use(express.session({
-                secret: 'restberry secret',
-            }));
-        });
+        app.use(express.cookieParser());
+        app.use(express.json());
+        app.use(express.urlencoded());
+        app.use(express.session({
+            secret: 'restberry',
+        }));
     }))
-    .use(new RestberryMongoose(function(odm) {
+    .use(restberryMongoose.use(function(odm) {
         odm.connect('mongodb://localhost/restberry-test');
     }))
-
-restberry
-    .auth
-        .useLocal({
+    .use(restberryAuth.use(function(passport) {
+            var app = restberry.waf.app;
+            var express = restberry.waf.express;
+            app.use(passport.initialize());
+            app.use(passport.session());
+            app.use(app.router);
+            app.use(express.methodOverride());
+        })
+        .use(restberryAuthLocal.use({
             additionalFields: {
                 name: {
                     first: {type: String},
                     last: {type: String},
                 },
             },
-        })
-        .apply(function(waf, passport) {
-            var app = waf.app;
-            app.use(passport.initialize());
-            app.use(passport.session());
-        });
+        }))
+    )
+    .listen('RESTBERRY');
 
-var ObjectId = restberry.odm.mongoose.Schema.Types.ObjectId;
+var ObjectId = restberry.odm.ObjectId;
 
 // -- USER --
 
 restberry.model('User')
-    .setLoginRequired()
+    .loginRequired()
     .routes
         .addCreate({
             loginRequired: false,
         })  // POST /api/v1/users
         .addPartialUpdate()  // POST /api/v1/users/:id
-        .addReadMany()  // GET /api/v1/users
-            .addAction('me', {
-                action: function(req, res, next) {
+        .addReadMany({
+            actions: {
+                me: function(req, res, next) {
                     req.expand.push('user');
                     req.user.toJSON(req, res, true, next);
                 },
-            })  // GET /api/v1/users?action=me
+            },
+        })  // GET /api/v1/users
 
 // -- BAR --
 
 restberry.model('Bar')
-    .setSchema({
+    .schema({
         name: {type: String, unique: true},
         timestampUpdated: {type: Date, default: new Date(), uneditable: true},
         timestampCreated: {type: Date, default: new Date(), uneditable: true},
     })
-    .apply();
-
-restberry.model('Bar')
     .routes
         .addCreate()  // POST /api/v1/bars
         .addDelete()  // DELETE /api/v1/bars/:id
@@ -84,14 +83,11 @@ restberry.model('Bar')
 // -- FOO --
 
 restberry.model('Foo')
-    .setSchema({
+    .schema({
         user: {type: ObjectId, ref: 'User'},
         name: {type: String},
     })
-    .apply();
-
-restberry.model('Foo')
-    .setLoginRequired()
+    .loginRequired()
     .routes
         .addCreate({
             parentModel: restberry.model('User'),
@@ -104,7 +100,7 @@ restberry.model('Foo')
 // -- BAZ --
 
 restberry.model('Baz')
-    .setSchema({
+    .schema({
         name: {type: String},
         nested: {
             user: {type: ObjectId, ref: 'User'},
@@ -114,13 +110,10 @@ restberry.model('Baz')
             }],
         },
     })
-    .isCreateAuthorized(function(req, res, next) {
+    .isAuthorizedToCreate(function(req, res, next) {
         next(this.nested.user == req.user.id);
     })
-    .apply();
-
-restberry.model('Baz')
-    .setLoginRequired()
+    .loginRequired()
     .routes
         .addCreate({
             parentModel: restberry.model('User'),
@@ -139,11 +132,8 @@ restberry.routes.addCustom({
                 iter();
             });
         }, function() {
-           restberry.waf.handleRes({}, req, res, next);
+            res.status(204);
+            restberry.waf.handleRes({}, req, res, next);
         });
     },
 });
-
-// -- WEB --
-
-restberry.listen('restberry-test');
