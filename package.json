@@ -27,7 +27,6 @@
         "url": "https://github.com/materik/restberry/issues"
     },
     "dependencies": {
-        "restberry-auth": "0.1.x",
         "restberry-logger": "0.1.x",
         "restberry-model": "0.1.x",
         "restberry-modules": "0.1.x",

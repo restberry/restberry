@@ -1,3 +1,4 @@
+var httpStatus = require('http-status');
 var restberry = require('restberry');
 var restberryExpress = require('restberry-express');
 var restberryMongoose = require('restberry-mongoose');
@@ -25,15 +26,14 @@ restberry
     .use(restberryMongoose.use(function(odm) {
         odm.connect('mongodb://localhost/restberry-test');
     }))
-    .use(restberryAuth.use(function(passport) {
+    .use(restberryAuth.use(function(auth) {
             var app = restberry.waf.app;
-            var express = restberry.waf.express;
-            app.use(passport.initialize());
-            app.use(passport.session());
+            app.use(auth.passport.initialize());
+            app.use(auth.passport.session());
             app.use(app.router);
-            app.use(express.methodOverride());
+            app.use(restberry.waf.express.methodOverride());
         })
-        .use(restberryAuthLocal.use({
+        .use(restberryAuthLocal.config({
             additionalFields: {
                 name: {
                     first: {type: String},
@@ -41,10 +41,7 @@ restberry
                 },
             },
         }))
-    )
-    .listen('RESTBERRY');
-
-var ObjectId = restberry.odm.ObjectId;
+    ).listen('RESTBERRY');
 
 // -- USER --
 
@@ -59,7 +56,7 @@ restberry.model('User')
             actions: {
                 me: function(req, res, next) {
                     req.expand.push('user');
-                    req.user.toJSON(req, res, true, next);
+                    req.user.toJSON(req, res, next);
                 },
             },
         })  // GET /api/v1/users
@@ -72,19 +69,13 @@ restberry.model('Bar')
         timestampUpdated: {type: Date, default: new Date(), uneditable: true},
         timestampCreated: {type: Date, default: new Date(), uneditable: true},
     })
-    .routes
-        .addCreate()  // POST /api/v1/bars
-        .addDelete()  // DELETE /api/v1/bars/:id
-        .addPartialUpdate()  // POST /api/v1/bars/:id
-        .addRead()  // GET /api/v1/bars/:id
-        .addReadMany()  // GET /api/v1/bars
-        .addUpdate()  // PUT /api/v1/bars/:id
+    .routes.addCRUD();
 
 // -- FOO --
 
 restberry.model('Foo')
     .schema({
-        user: {type: ObjectId, ref: 'User'},
+        user: {type: restberry.odm.ObjectId, ref: 'User'},
         name: {type: String},
     })
     .loginRequired()
@@ -103,15 +94,16 @@ restberry.model('Baz')
     .schema({
         name: {type: String},
         nested: {
-            user: {type: ObjectId, ref: 'User'},
+            user: {type: restberry.odm.ObjectId, ref: 'User'},
             foos: [{
-                type: ObjectId,
+                type: restberry.odm.ObjectId,
                 ref: 'Foo'
             }],
         },
     })
-    .isAuthorizedToCreate(function(req, res, next) {
-        next(this.nested.user == req.user.id);
+    .isAuthorizedToCreate(function(obj, req, res, next) {
+        var data = obj.getData();
+        next(data.nested && data.nested.user == req.user.getId());
     })
     .loginRequired()
     .routes
@@ -132,7 +124,7 @@ restberry.routes.addCustom({
                 iter();
             });
         }, function() {
-            res.status(204);
+            res.status(httpStatus.NO_CONTENT);
             restberry.waf.handleRes({}, req, res, next);
         });
     },
