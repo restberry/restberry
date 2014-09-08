@@ -57,12 +57,8 @@ restberry.model('Bar')
 
 ```
 
-**NOTE:** See more usages in the test app and dependent packages like:
-restberry-express, restberry-mongoose, restberry-router.
-
-## Authentication
-
-See `restberry-auth`.
+**NOTE:** See more usages in the tests and dependent packages like:
+restberry-express, restberry-mongoose, and restberry-router.
 
 ## Response examples
 
@@ -101,7 +97,11 @@ additional code.
 2014-05-11T11:55:52.579Z|172.16.122.129|204|
 ```
 
-**NOTE:** See `restberry-erros` for possible error responses.
+**NOTE:** See `restberry-errors` for possible error responses.
+
+## Authentication
+
+See `restberry-auth`.
 
 ## Routing
 
