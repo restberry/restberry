@@ -1,5 +1,5 @@
 var httpStatus = require('http-status');
-var testlib = require('../testlib');
+var testlib = require(process.env.NODE_PATH + '/testlib');
 
 
 exports.setUp = testlib.setupTeardown;

@@ -1,20 +1,40 @@
 #!/bin/bash
 
-export NODE_PORT=5115
-export NODE_HOST=`ifconfig | grep 'inet addr:' | grep -v '127.0.0.1' |
-                  cut -d: -f2 | awk '{ print $1}'`
-
 root_dir=`pwd`
 test_dir=$root_dir/tests
-tests_dir=$test_dir/tests
-node_app=app.js
-node_app_path=$test_dir/$node_app
 
-cd $test_dir
-forever stop $node_app
-forever start $node_app
-sleep 1
+test_module_dirs[0]="express-mongoose"
+test_module_dirs[1]="auth-express-mongoose"
 
-nodeunit $tests_dir
+for dir in ${test_module_dirs[*]}
+do
 
-forever logs $node_app
+    echo "========================================="
+    echo "===== $dir ====="
+    echo "========================================="
+    echo
+
+    test_module_dir=$test_dir/$dir
+    tests_dir=$test_module_dir/tests
+    node_app=app.js
+    node_app_path=$test_module_dir/$node_app
+
+    if [ ! -d $test_module_dir ]
+    then
+        echo "couldn't find $test_module_dir";
+        exit 0
+    fi
+
+    export NODE_HOST=`ifconfig | grep 'inet addr:' | grep -v '127.0.0.1' |
+                      cut -d: -f2 | awk '{ print $1}'`
+    export NODE_PORT=5115
+    export NODE_PATH=$test_dir
+
+    cd $test_module_dir
+    forever start $node_app
+    sleep 1
+    nodeunit $tests_dir
+    forever stop $node_app
+    sleep 1
+
+done

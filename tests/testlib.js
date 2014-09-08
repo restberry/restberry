@@ -1,6 +1,6 @@
 var httpStatus = require('http-status');
-var mongoose = require('mongoose');
 var requests = require('http-requests');
+var utils = require('restberry-utils');
 
 
 var DB = 'mongodb://localhost/restberry-npm';
@@ -41,5 +41,22 @@ exports.loginUser = function(email, password, next) {
 exports.logoutUser = function(next) {
     requests.get('/logout', function(code) {
         if (code === httpStatus.NO_CONTENT)  next();
+    });
+};
+
+exports.enableClearDataRoute = function(restberry) {
+    restberry.routes.addCustom({
+        path: '/clearData',
+        action: function(req, res, next) {
+            var models = restberry.odm.mongoose.models;
+            var keys = Object.keys(models);
+            utils.forEachAndDone(keys, function(key, iter) {
+                var model = models[key];
+                model.remove(iter);
+            }, function() {
+                res.status(httpStatus.NO_CONTENT);
+                restberry.waf.handleRes({}, req, res, next);
+            });
+        },
     });
 };

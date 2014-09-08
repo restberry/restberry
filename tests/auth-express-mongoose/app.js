@@ -1,10 +1,9 @@
-var httpStatus = require('http-status');
 var restberry = require('restberry');
 var restberryExpress = require('restberry-express');
 var restberryMongoose = require('restberry-mongoose');
 var restberryAuth = require('restberry-auth');
 var restberryAuthLocal = require('restberry-auth-local');
-var utils = require('restberry-utils');
+var testlib = require(process.env.NODE_PATH + '/testlib');
 
 
 restberry
@@ -43,15 +42,13 @@ restberry
         }))
     ).listen('RESTBERRY');
 
-// -- USER --
-
 restberry.model('User')
     .loginRequired()
     .routes
         .addCreate({
             loginRequired: false,
-        })  // POST /api/v1/users
-        .addPartialUpdate()  // POST /api/v1/users/:id
+        })
+        .addPartialUpdate()
         .addReadMany({
             actions: {
                 me: function(req, res, next) {
@@ -59,19 +56,7 @@ restberry.model('User')
                     req.user.toJSON(req, res, next);
                 },
             },
-        })  // GET /api/v1/users
-
-// -- BAR --
-
-restberry.model('Bar')
-    .schema({
-        name: {type: String, unique: true},
-        timestampUpdated: {type: Date, default: new Date(), uneditable: true},
-        timestampCreated: {type: Date, default: new Date(), uneditable: true},
-    })
-    .routes.addCRUD();
-
-// -- FOO --
+        })
 
 restberry.model('Foo')
     .schema({
@@ -82,13 +67,11 @@ restberry.model('Foo')
     .routes
         .addCreate({
             parentModel: restberry.model('User'),
-        })  // POST /api/v1/users/:id/foos
-        .addRead()  // GET /api/v1/foos/:id
+        })
+        .addRead()
         .addReadMany({
             parentModel: restberry.model('User'),
-        })  // GET /api/v1/users/:id/foos
-
-// -- BAZ --
+        })
 
 restberry.model('Baz')
     .schema({
@@ -109,23 +92,6 @@ restberry.model('Baz')
     .routes
         .addCreate({
             parentModel: restberry.model('User'),
-        })  // POST /api/v1/users/:id/bazs
+        })
 
-// -- TESTING --
-
-restberry.routes.addCustom({
-    path: '/clearData',
-    action: function(req, res, next) {
-        var models = restberry.odm.mongoose.models;
-        var keys = Object.keys(models);
-        utils.forEachAndDone(keys, function(key, iter) {
-            var model = models[key];
-            model.remove(function() {
-                iter();
-            });
-        }, function() {
-            res.status(httpStatus.NO_CONTENT);
-            restberry.waf.handleRes({}, req, res, next);
-        });
-    },
-});
+testlib.enableClearDataRoute(restberry);
