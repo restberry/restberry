@@ -84,8 +84,8 @@ restberry.model('Baz')
         },
     })
     .isAuthorizedToCreate(function(obj, req, res, next) {
-        var data = obj.getData();
-        next(data.nested && data.nested.user == req.user.getId());
+        var nested = obj.get('nested');
+        next(nested && nested.user == req.user.getId());
     })
     .loginRequired()
     .routes
