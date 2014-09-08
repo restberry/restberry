@@ -43,4 +43,4 @@ restberry.model('Foo')
             parentModel: restberry.model('Bar'),
         })
 
-testlib.enableClearDataRoute(restberry);
+testlib.enableClearData(restberry);

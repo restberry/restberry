@@ -43,7 +43,6 @@ restberry
     ).listen('RESTBERRY');
 
 restberry.model('User')
-    .loginRequired()
     .routes
         .addCreate({
             loginRequired: false,
@@ -52,7 +51,7 @@ restberry.model('User')
         .addReadMany({
             actions: {
                 me: function(req, res, next) {
-                    req.expand.push('user');
+                    req.expand.push(restberry.auth.getUser().singleName());
                     req.user.toJSON(req, res, next);
                 },
             },
@@ -94,4 +93,4 @@ restberry.model('Baz')
             parentModel: restberry.model('User'),
         })
 
-testlib.enableClearDataRoute(restberry);
+testlib.enableClearData(restberry);

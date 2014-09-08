@@ -44,7 +44,7 @@ exports.logoutUser = function(next) {
     });
 };
 
-exports.enableClearDataRoute = function(restberry) {
+exports.enableClearData = function(restberry) {
     restberry.routes.addCustom({
         path: '/clearData',
         action: function(req, res, next) {
