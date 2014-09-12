@@ -9,7 +9,7 @@ requests.config({
     host: process.env.NODE_HOST || 'localhost',
     port: process.env.NODE_PORT || 6000,
     ssl: false,
-    verbose: true,
+    verbose: process.env.NODE_DEBUG === 'true' || false,
 });
 
 exports.requests = requests;

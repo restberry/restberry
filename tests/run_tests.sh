@@ -3,8 +3,9 @@
 root_dir=`pwd`
 test_dir=$root_dir/tests
 
-test_module_dirs[0]="express-mongoose"
-test_module_dirs[1]="auth-express-mongoose"
+test_module_dirs[0]="auth-google-express-mongoose"
+test_module_dirs[1]="auth-local-express-mongoose"
+test_module_dirs[2]="express-mongoose"
 
 for dir in ${test_module_dirs[*]}
 do
@@ -22,7 +23,7 @@ do
     if [ ! -d $test_module_dir ]
     then
         echo "couldn't find $test_module_dir";
-        exit 0
+        exit 1
     fi
 
     export NODE_HOST=`ifconfig | grep 'inet addr:' | grep -v '127.0.0.1' |
@@ -34,6 +35,12 @@ do
     forever start $node_app
     sleep 1
     nodeunit $tests_dir
+
+    if [ "$?" -ne "0" ]
+    then
+        forever logs $node_app
+    fi
+
     forever stop $node_app
     sleep 1
 

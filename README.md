@@ -30,7 +30,7 @@ var resbterryMongoose = require('restberry-mongoose');
 restberry
     .config({
         apiPath: '/api/v1',
-        port: '',
+        port: 5000,
     })
     .use(restberryExpress.use(function(waf) {
         ...
@@ -67,7 +67,7 @@ additional code.
 
 * **200** OK
 ```
-2014-05-11T11:55:53.916Z|172.16.122.129|GET|</api/v1/foos/536f6549e88ad2b5a71ffdc6> <{}>
+2014-05-11T11:55:53.916Z|172.16.122.129|GET|/api/v1/foos/536f6549e88ad2b5a71ffdc6|<{}>
 2014-05-11T11:55:53.920Z|172.16.122.129|200|<{
   "foo": {
     "href": "/api/v1/foos/536f6549e88ad2b5a71ffdc7",
@@ -79,7 +79,7 @@ additional code.
 
 * **201** CREATED
 ```
-2014-05-11T11:55:54.210Z|172.16.122.129|POST|</api/v1/foos> <{
+2014-05-11T11:55:54.210Z|172.16.122.129|POST|/api/v1/foos|<{
   "name": "test"
 }>
 2014-05-11T11:55:54.210Z|172.16.122.129|201|<{
@@ -93,7 +93,7 @@ additional code.
 
 * **204** NO CONTENT
 ```
-2014-05-11T11:55:52.575Z|172.16.122.129|DELETE|</api/v1/foos/536f6548e88ad2b5a71ffdb7> <{}>
+2014-05-11T11:55:52.575Z|172.16.122.129|DELETE|/api/v1/foos/536f6548e88ad2b5a71ffdb7|<{}>
 2014-05-11T11:55:52.579Z|172.16.122.129|204|
 ```
 
@@ -110,7 +110,7 @@ See `restberry-router`
 ## Run the tests
 
 ```
-$ npm test
+npm test
 ```
 
 ## Contact
