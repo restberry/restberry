@@ -15,7 +15,7 @@ requests.config({
 exports.requests = requests;
 
 exports.setupTeardown = function(next) {
-    requests.get('/clearData', function() {
+    requests.get('/dev/clearData', function() {
         next();
     });
 };
@@ -45,8 +45,8 @@ exports.logoutUser = function(next) {
 };
 
 exports.enableClearData = function(restberry) {
-    restberry.routes.addCustom({
-        path: '/clearData',
+    restberry.routes.addCustomRoute({
+        path: '/dev/clearData',
         action: function(req, res, next) {
             var models = restberry.odm.mongoose.models;
             var keys = Object.keys(models);

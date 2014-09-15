@@ -27,7 +27,7 @@ restberry.model('Bar')
         timestampUpdated: {type: Date, default: new Date(), uneditable: true},
         timestampCreated: {type: Date, default: new Date(), uneditable: true},
     })
-    .routes.addCRUD();
+    .routes.addCRUDRoutes();
 
 restberry.model('Foo')
     .schema({
@@ -35,11 +35,11 @@ restberry.model('Foo')
         name: {type: String},
     })
     .routes
-        .addCreate({
+        .addCreateRoute({
             parentModel: restberry.model('Bar'),
         })
-        .addRead()
-        .addReadMany({
+        .addReadRoute()
+        .addReadManyRoute({
             parentModel: restberry.model('Bar'),
         })
 

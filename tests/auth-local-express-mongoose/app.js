@@ -44,15 +44,16 @@ restberry
 
 restberry.model('User')
     .routes
-        .addCreate({
-            loginRequired: false,
+        .addCreateRoute({
+            isLoginRequired: false,
         })
-        .addPartialUpdate()
-        .addReadMany({
+        .addPartialUpdateRoute()
+        .addReadManyRoute({
             actions: {
                 me: function(req, res, next) {
-                    req.expand.push(restberry.auth.getUser().singleName());
-                    req.user.toJSON(req, res, next);
+                    var User = restberry.auth.getUser();
+                    restberry.waf.addExpand(User.singularName());
+                    req.user.toJSON(next);
                 },
             },
         })
@@ -64,11 +65,11 @@ restberry.model('Foo')
     })
     .loginRequired()
     .routes
-        .addCreate({
+        .addCreateRoute({
             parentModel: restberry.model('User'),
         })
-        .addRead()
-        .addReadMany({
+        .addReadRoute()
+        .addReadManyRoute({
             parentModel: restberry.model('User'),
         })
 
@@ -83,13 +84,14 @@ restberry.model('Baz')
             }],
         },
     })
-    .isAuthorizedToCreate(function(req, res, next) {
-        var nested = this.get('nested');
-        next(nested && nested.user == req.user.getId());
-    })
     .loginRequired()
+    .isAuthorizedToCreate(function(next) {
+        var nested = this.get('nested');
+        var user = this.restberry.waf.getUser();
+        next(nested && nested.user == user.getId());
+    })
     .routes
-        .addCreate({
+        .addCreateRoute({
             parentModel: restberry.model('User'),
         })
 

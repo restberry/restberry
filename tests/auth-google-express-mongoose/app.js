@@ -43,11 +43,11 @@ restberry
 
 restberry.model('User')
     .routes
-        .addCreate({
+        .addCreateRoute({
             loginRequired: false,
         })
-        .addPartialUpdate()
-        .addReadMany({
+        .addPartialUpdateRoute()
+        .addReadManyRoute({
             actions: {
                 me: function(req, res, next) {
                     req.expand.push(restberry.auth.getUser().singleName());

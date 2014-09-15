@@ -44,14 +44,14 @@ restberry.model('Foo')
     .schema({
         name: {type: String},
     })
-    .routes.addCRUD();
+    .routes.addCRUDRoutes();
 
 restberry.model('Bar')
     .schema({
         foo: {type: restberry.odm.ObjectId, ref: 'Foo'},
         name: {type: String},
     })
-    .routes.addCRUD({
+    .routes.addCRUDRoutes({
         parentModel: restberry.model('Foo'),
     });
 
