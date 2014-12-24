@@ -39,6 +39,7 @@ do
     if [ "$?" -ne "0" ]
     then
         forever logs $node_app
+        exit 1
     fi
 
     forever stop $node_app
