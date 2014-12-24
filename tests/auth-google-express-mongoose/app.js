@@ -42,6 +42,7 @@ restberry
     ).listen('RESTBERRY');
 
 restberry.model('User')
+    .loginRequired()
     .routes
         .addCreateRoute({
             loginRequired: false,
@@ -50,8 +51,9 @@ restberry.model('User')
         .addReadManyRoute({
             actions: {
                 me: function(req, res, next) {
-                    req.expand.push(restberry.auth.getUser().singleName());
-                    req.user.toJSON(req, res, next);
+                    var User = restberry.auth.getUser();
+                    req.user.options().addExpand(User.singleName());
+                    req.user.toJSON(next);
                 },
             },
         })

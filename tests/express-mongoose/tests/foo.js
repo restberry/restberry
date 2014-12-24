@@ -157,8 +157,8 @@ exports.testReadManyAsync = function(test) {
                         test.ok(json.foo.bar.name);
                         done();
                     });
-                }, 10);
-            }, 10);
+                }, 1);
+            }, 1);
         });
     });
 };

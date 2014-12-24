@@ -43,6 +43,7 @@ restberry
     ).listen('RESTBERRY');
 
 restberry.model('User')
+    .loginRequired()
     .routes
         .addCreateRoute({
             isLoginRequired: false,
@@ -52,7 +53,7 @@ restberry.model('User')
             actions: {
                 me: function(req, res, next) {
                     var User = restberry.auth.getUser();
-                    restberry.waf.addExpand(User.singularName());
+                    req.user.options().addExpand(User.singularName());
                     req.user.toJSON(next);
                 },
             },

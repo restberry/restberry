@@ -25,12 +25,12 @@
     "devDependencies": {
         "http-requests": "0.1.x",
         "http-status": "0.1.x",
-        "restberry": "0.1.x",
+        "restberry": "0.3.x",
         "restberry-auth": "0.1.x",
         "restberry-auth-local": "0.1.x",
         "restberry-auth-google": "0.1.x",
-        "restberry-express": "0.1.x",
-        "restberry-mongoose": "0.1.x",
+        "restberry-express": "0.2.x",
+        "restberry-mongoose": "0.2.x",
         "underscore": "1.5.x"
     },
     "homepage": "http://restberry.com",
@@ -49,5 +49,5 @@
     "scripts": {
         "test": "./tests/run_tests.sh"
     },
-    "version": "0.3.0"
+    "version": "0.3.1"
 }
