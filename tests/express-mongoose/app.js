@@ -43,4 +43,15 @@ restberry.model('Foo')
             parentModel: restberry.model('Bar'),
         })
 
+restberry.model('Baz')
+    .schema({
+        nested: {
+            obj: {type: restberry.odm.ObjectId, ref: 'Baz'},
+        },
+    })
+    .routes
+        .addCreateRoute()
+        .addPartialUpdateRoute()
+        .addReadRoute()
+
 testlib.enableClearData(restberry);
