@@ -58,7 +58,7 @@ restberry.model('Bar')
 ```
 
 **NOTE:** See more usages in the tests and dependent packages like:
-restberry-express, restberry-mongoose, and restberry-router.
+restberry-express and restberry-mongoose.
 
 ## Response examples
 
@@ -105,7 +105,70 @@ See `restberry-auth`.
 
 ## Routing
 
-See `restberry-router`
+See `restberry-router-crud`, it's applied by default but other routes can be used by
+applying: ``restberryRouter.use(require('restberry-router-*'));``
+
+Example:
+
+```
+restberry.model('Foo')
+    .routes
+        .addCreateRoute()  // POST /foos
+```
+
+Handle action query strings like this:
+
+```
+restberry.model('Foo')
+    .routes
+        .addPartialUpdateRoutes({
+            actions: {
+                build: function(req, res, next) {
+                    ...
+                },  // POST /foos/:id?action=build
+            },
+        })
+```
+
+And Handle parent models like this:
+
+```
+restberry.model('Foo')
+    .routes
+        .addCreateRoutes({
+            parentModel: restberry.model('Bar'),
+        })  // POST /bars/:id/foos
+```
+
+**NOTE:** this can only be applied to ReadMany and Create.
+
+You can also create custom routes. The possible configurations you can make are:
+
+```
+restberry
+    .routes
+        .addCustomRoutes({
+            action: function(req, res, next) {
+                ...
+            },
+            apiPath: '/api/v1',  // overrides the one set to Restberry
+            actions: { },
+            loginRequired: false,  // should authenticate the request
+            method: 'GET',  // choices: DELETE, GET, POST, PUT
+            parentModel: restberry.model('Bar'),
+            path: '/path/to',
+            postAction: function(json, req, res, next) {
+                ...
+            },  // will be execated after action
+            preAction: function(req, res, next) {
+                ...
+            },  // will be execated before action
+            verbose: false,  // will print the API call on initiation
+        })
+```
+
+**NOTE:** you can set these properties to all the predefined API definitions,
+you won't be able to override `action` however.
 
 ## Run the tests
 

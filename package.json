@@ -17,7 +17,7 @@
         "restberry-errors": "0.2.x",
         "restberry-logger": "0.1.x",
         "restberry-modules": "0.2.x",
-        "restberry-router": "0.2.x",
+        "restberry-router-crud": "0.1.x",
         "restberry-utils": "0.1.x",
         "underscore": "1.5.x"
     },
@@ -49,5 +49,5 @@
     "scripts": {
         "test": "./tests/run_tests.sh"
     },
-    "version": "0.3.2"
+    "version": "0.3.3"
 }
