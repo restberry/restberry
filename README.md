@@ -15,8 +15,7 @@ npm install restberry
 
 ## Apps using Restberry in production
 
-* Sales-Branch (http://sales-branch.com)
-* Like-Minded (http://like-minded.materik.me)
+* Legacy (http://thelegacy.io)
 
 **NOTE:** Let me know if you want your app to be put on this list.
 
