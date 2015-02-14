@@ -44,6 +44,11 @@ restberry
 
 restberry.model('User')
     .loginRequired()
+    .preSave(function(next) {
+        var name = this.get('name');
+        if (name.first === undefined)  this.set('name', {first: 'tom'});
+        next();
+    })
     .routes
         .addCreateRoute({
             isLoginRequired: false,
