@@ -1,4 +1,4 @@
-Restberry ![](https://img.shields.io/npm/v/restberry.svg) ![](https://img.shields.io/npm/dm/restberry.svg) ![](https://travis-ci.org/materik/restberry.svg)
+Restberry [![](https://img.shields.io/npm/v/restberry.svg)](https://www.npmjs.com/package/restberry) [![](https://img.shields.io/npm/dm/restberry.svg)](https://www.npmjs.com/package/restberry) [![](https://travis-ci.org/materik/restberry.svg)](https://travis-ci.org/materik/restberry)
 =========
 
 Framework for setting up RESTful APIs. Define your models and setup CRUD API
