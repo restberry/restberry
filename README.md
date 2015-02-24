@@ -15,7 +15,8 @@ npm install restberry
 
 ## Apps using Restberry in production
 
-* Legacy (http://thelegacy.io)
+* [Legacy](http://thelegacy.io)
+* [SalesBranch](http://sales-branch.com)
 
 **NOTE:** Let me know if you want your app to be put on this list.
 
@@ -57,7 +58,7 @@ restberry.model('Bar')
 ```
 
 **NOTE:** See more usages in the tests and dependent packages like:
-restberry-express and restberry-mongoose.
+[`restberry-express`](https://github.com/materik/restberry-express) and [`restberry-mongoose`](https://github.com/materik/restberry-mongoose).
 
 ## Response examples
 
@@ -96,18 +97,13 @@ additional code.
 2014-05-11T11:55:52.579Z|172.16.122.129|204|
 ```
 
-**NOTE:** See `restberry-errors` for possible error responses.
+**NOTE:** See [`restberry-errors`](https://github.com/materik/restberry-errors) for possible error responses.
 
 ## Authentication
 
-See `restberry-auth`.
+See [`restberry-auth`](https://github.com/materik/restberry-auth).
 
 ## Routing
-
-See `restberry-router-crud`, it's applied by default but other routes can be used by
-applying: ``restberryRouter.use(require('restberry-router-*'));``
-
-Example:
 
 ```
 restberry.model('Foo')
@@ -150,18 +146,18 @@ restberry
             action: function(req, res, next) {
                 ...
             },
-            apiPath: '/api/v1',  // overrides the one set to Restberry
+            apiPath: '/api/v1',  // overrides the one set on Restberry
             actions: { },
             loginRequired: false,  // should authenticate the request
             method: 'GET',  // choices: DELETE, GET, POST, PUT
             parentModel: restberry.model('Bar'),
-            path: '/path/to',
+            path: '/path/to',  // the path of the route, will append apiPath
             postAction: function(json, req, res, next) {
                 ...
-            },  // will be execated after action
+            },  // will be executed after action
             preAction: function(req, res, next) {
                 ...
-            },  // will be execated before action
+            },  // will be executed before action
             verbose: false,  // will print the API call on initiation
         })
 ```
@@ -169,11 +165,21 @@ restberry
 **NOTE:** you can set these properties to all the predefined API definitions,
 you won't be able to override `action` however.
 
+See [`restberry-router-crud`](https://github.com/materik/restberry-router-crud) for more info.
+
 ## Run the tests
 
 ```
 npm test
 ```
+
+## Further reading
+
+I have written an article series on RESTful API design which this package is base upon, you can find the three parts here:
+
+- http://materik.tumblr.com/post/98324672516/restful-json-api-design-part-1
+- http://materik.tumblr.com/post/99806761591/restful-json-api-design-part-2
+- http://materik.tumblr.com/post/101938795476/restful-json-api-design-part-3
 
 ## Contact
 
