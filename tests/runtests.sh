@@ -18,6 +18,9 @@ function PRINT_TITLE {
     echo
 }
 
+cd $test_dir
+npm install
+
 for dir in ${test_module_dirs[*]}
 do
 
@@ -43,7 +46,7 @@ do
     npm install
     forever start $node_app
     sleep 1
-    nodeunit $tests_dir
+    npm test
 
     if [ "$?" -ne "0" ]
     then

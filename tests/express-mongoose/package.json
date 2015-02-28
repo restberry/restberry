@@ -1,0 +1,11 @@
+{
+   "dependencies": {
+        "http-status": "0.1.x",
+        "restberry": "0.3.x",
+        "restberry-express": "0.2.x",
+        "restberry-mongoose": "0.2.x"
+    },
+    "scripts": {
+        "test": "nodeunit tests"
+    }
+}
