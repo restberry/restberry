@@ -38,5 +38,5 @@
     "scripts": {
         "test": "./tests/runtests.sh"
     },
-    "version": "0.3.11"
+    "version": "0.3.12"
 }
