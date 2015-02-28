@@ -23,7 +23,6 @@
     },
     "description": "RESTful API Framework",
     "devDependencies": {
-        "http-requests": "0.1.x",
         "http-status": "0.1.x",
         "restberry": "0.3.x",
         "restberry-auth": "0.2.x",
@@ -31,6 +30,7 @@
         "restberry-auth-google": "0.2.x",
         "restberry-express": "0.2.x",
         "restberry-mongoose": "0.2.x",
+        "request-json": "0.5.x",
         "underscore": "1.5.x"
     },
     "homepage": "http://restberry.com",
@@ -47,7 +47,7 @@
         "url": "https://github.com/materik/restberry.git"
     },
     "scripts": {
-        "test": "./tests/run_tests.sh"
+        "test": "./tests/runtests.sh"
     },
-    "version": "0.3.9"
+    "version": "0.3.10"
 }

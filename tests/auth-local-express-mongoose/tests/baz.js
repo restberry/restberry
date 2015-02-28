@@ -1,5 +1,5 @@
 var httpStatus = require('http-status');
-var testlib = require(process.env.NODE_PATH + '/testlib');
+var testlib = require(process.env.NODE_PATH + '//testlib');
 
 
 var EMAIL = 'test@restberry.com';
@@ -12,9 +12,9 @@ exports.testUnauthCreate = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         testlib.logoutUser(function() {
             var d = {name: 'test'};
-            var path = '/users/' + userId + '/bazs';
-            testlib.requests.post(path, d, function(code, json) {
-                test.equal(code, httpStatus.UNAUTHORIZED);
+            var path = 'users/' + userId + '/bazs';
+            testlib.client.post(path, d, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.UNAUTHORIZED);
                 test.done();
             });
         });
@@ -24,9 +24,9 @@ exports.testUnauthCreate = function(test) {
 exports.testAuthCreate = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {name: 'test'};
-        var path = '/users/' + userId + '/bazs';
-        testlib.requests.post(path, d, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
+        var path = 'users/' + userId + '/bazs';
+        testlib.client.post(path, d, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
             test.equal(json.baz.nested.user.id, userId);
             test.done();
         });
@@ -36,12 +36,12 @@ exports.testAuthCreate = function(test) {
 exports.testArray = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d1 = {name: 'test'}//, nested: {user: userId}};
-        var path = '/users/' + userId + '/foos';
-        testlib.requests.post(path, d1, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
+        var path = 'users/' + userId + '/foos';
+        testlib.client.post(path, d1, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
             var foo1 = json.foo.id;
-            testlib.requests.post(path, d1, function(code, json) {
-                test.equal(code, httpStatus.CREATED);
+            testlib.client.post(path, d1, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.CREATED);
                 var foo2 = json.foo.id;
                 var d2 = {
                     name: 'test',
@@ -49,9 +49,9 @@ exports.testArray = function(test) {
                         foos: [foo1, foo2],
                     }
                 };
-                var path = '/users/' + userId + '/bazs';
-                testlib.requests.post(path, d2, function(code, json) {
-                    test.equal(code, httpStatus.CREATED);
+                var path = 'users/' + userId + '/bazs';
+                testlib.client.post(path, d2, function(err, res, json) {
+                    test.equal(res.statusCode, httpStatus.CREATED);
                     var foos = json.baz.nested.foos;
                     test.equal(foos.length, 2);
                     for (var i in foos) {
@@ -69,12 +69,12 @@ exports.testArray = function(test) {
 exports.testArrayExpand = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d1 = {name: 'test'};
-        var path = '/users/' + userId + '/foos';
-        testlib.requests.post(path, d1, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
+        var path = 'users/' + userId + '/foos';
+        testlib.client.post(path, d1, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
             var foo1 = json.foo.id;
-            testlib.requests.post(path, d1, function(code, json) {
-                test.equal(code, httpStatus.CREATED);
+            testlib.client.post(path, d1, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.CREATED);
                 var foo2 = json.foo.id;
                 var d2 = {
                     name: 'test',
@@ -82,9 +82,9 @@ exports.testArrayExpand = function(test) {
                         foos: [foo1, foo2],
                     }
                 };
-                var path = '/users/' + userId + '/bazs?expand=foos';
-                testlib.requests.post(path, d2, function(code, json) {
-                    test.equal(code, httpStatus.CREATED);
+                var path = 'users/' + userId + '/bazs?expand=foos';
+                testlib.client.post(path, d2, function(err, res, json) {
+                    test.equal(res.statusCode, httpStatus.CREATED);
                     var foos = json.baz.nested.foos;
                     test.equal(foos.length, 2);
                     for (var i in foos) {

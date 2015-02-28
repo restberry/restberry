@@ -6,18 +6,18 @@ exports.setUp = testlib.setupTeardown;
 exports.tearDown = testlib.setupTeardown;
 
 exports.testReadMany = function(test) {
-    testlib.requests.post('/bars', {}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bars', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         var barId = json.bar.id;
         var d1 = {name: 'test1'};
         var d2 = {name: 'test2'};
-        var path = '/bars/' + barId + '/foos';
-        testlib.requests.post(path, d1, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
-            testlib.requests.post(path, d2, function(code, json) {
-                test.equal(code, httpStatus.CREATED);
-                testlib.requests.get(path, function(code, json) {
-                    test.equal(code, httpStatus.OK);
+        var path = 'bars/' + barId + '/foos';
+        testlib.client.post(path, d1, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
+            testlib.client.post(path, d2, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.CREATED);
+                testlib.client.get(path, function(err, res, json) {
+                    test.equal(res.statusCode, httpStatus.OK);
                     test.equal(json.foos.length, 2);
                     for (var i in json.foos) {
                         var foo = json.foos[i];
@@ -33,18 +33,18 @@ exports.testReadMany = function(test) {
 };
 
 exports.testReadManyExpand = function(test) {
-    testlib.requests.post('/bars', {}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bars', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         var barId = json.bar.id;
         var d1 = {name: 'test1'};
         var d2 = {name: 'test2'};
-        var path = '/bars/' + barId + '/foos?expand=foo';
-        testlib.requests.post(path, d1, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
-            testlib.requests.post(path, d2, function(code, json) {
-                test.equal(code, httpStatus.CREATED);
-                testlib.requests.get(path, function(code, json) {
-                    test.equal(code, httpStatus.OK);
+        var path = 'bars/' + barId + '/foos?expand=foo';
+        testlib.client.post(path, d1, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
+            testlib.client.post(path, d2, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.CREATED);
+                testlib.client.get(path, function(err, res, json) {
+                    test.equal(res.statusCode, httpStatus.OK);
                     test.equal(json.foos.length, 2);
                     for (var i in json.foos) {
                         var foo = json.foos[i];
@@ -61,19 +61,19 @@ exports.testReadManyExpand = function(test) {
 };
 
 exports.testReadManyFields = function(test) {
-    testlib.requests.post('/bars', {}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bars', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         var barId = json.bar.id;
         var d1 = {name: 'test1'};
         var d2 = {name: 'test2'};
         var qs = '?expand=foo&fields=name';
-        var path = '/bars/' + barId + '/foos' + qs;
-        testlib.requests.post(path, d1, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
-            testlib.requests.post(path, d2, function(code, json) {
-                test.equal(code, httpStatus.CREATED);
-                testlib.requests.get(path, function(code, json) {
-                    test.equal(code, httpStatus.OK);
+        var path = 'bars/' + barId + '/foos' + qs;
+        testlib.client.post(path, d1, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
+            testlib.client.post(path, d2, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.CREATED);
+                testlib.client.get(path, function(err, res, json) {
+                    test.equal(res.statusCode, httpStatus.OK);
                     test.equal(json.foos.length, 2);
                     for (var i in json.foos) {
                         var foo = json.foos[i];
@@ -90,19 +90,19 @@ exports.testReadManyFields = function(test) {
 };
 
 exports.testReadManyFieldsNested = function(test) {
-    testlib.requests.post('/bars', {name: 'x'}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bars', {name: 'x'}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         var barId = json.bar.id;
         var d1 = {name: 'test1'};
         var d2 = {name: 'test2'};
         var qs = '?expand=foo,bar&fields=bar,name';
-        var path = '/bars/' + barId + '/foos' + qs;
-        testlib.requests.post(path, d1, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
-            testlib.requests.post(path, d2, function(code, json) {
-                test.equal(code, httpStatus.CREATED);
-                testlib.requests.get(path, function(code, json) {
-                    test.equal(code, httpStatus.OK);
+        var path = 'bars/' + barId + '/foos' + qs;
+        testlib.client.post(path, d1, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
+            testlib.client.post(path, d2, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.CREATED);
+                testlib.client.get(path, function(err, res, json) {
+                    test.equal(res.statusCode, httpStatus.OK);
                     test.equal(json.foos.length, 2);
                     for (var i in json.foos) {
                         var foo = json.foos[i];
@@ -124,25 +124,25 @@ exports.testReadManyAsync = function(test) {
     var done = function() {
         i++; if (i === n)  test.done();
     };
-    testlib.requests.post('/bars', {name: 'x'}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bars', {name: 'x'}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         var barId = json.bar.id;
-        var path = '/bars/' + barId + '/foos';
-        testlib.requests.post(path, {name: 'x'}, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
+        var path = 'bars/' + barId + '/foos';
+        testlib.client.post(path, {name: 'x'}, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
             var fooId = json.foo.id;
-            var path = '/foos/' + fooId;
+            var path = 'foos/' + fooId;
             var path1 = path + '?fields=id';
-            testlib.requests.get(path1, function(code, json) {
-                test.equal(code, httpStatus.OK);
+            testlib.client.get(path1, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.OK);
                 test.ok(!json.foo.name);
                 test.ok(!json.foo.bar);
                 done();
             });
             setTimeout(function() {
                 var path2 = path + '?expand=foo';
-                testlib.requests.get(path2, function(code, json) {
-                    test.equal(code, httpStatus.OK);
+                testlib.client.get(path2, function(err, res, json) {
+                    test.equal(res.statusCode, httpStatus.OK);
                     test.ok(json.foo.name);
                     test.ok(json.foo.bar);
                     test.ok(!json.foo.bar.name);
@@ -150,8 +150,8 @@ exports.testReadManyAsync = function(test) {
                 });
                 setTimeout(function() {
                     var path3 = path + '?expand=foo,bar';
-                    testlib.requests.get(path3, function(code, json) {
-                        test.equal(code, httpStatus.OK);
+                    testlib.client.get(path3, function(err, res, json) {
+                        test.equal(res.statusCode, httpStatus.OK);
                         test.ok(json.foo.name);
                         test.ok(json.foo.bar);
                         test.ok(json.foo.bar.name);

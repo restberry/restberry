@@ -6,23 +6,23 @@ exports.setUp = testlib.setupTeardown;
 exports.tearDown = testlib.setupTeardown;
 
 exports.testCreate = function(test) {
-    testlib.requests.post('/bazs', {}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bazs', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         test.ok(!json.baz.nested);
         test.done();
     });
 };
 
 exports.testNestedTwice = function(test) {
-    testlib.requests.post('/bazs', {}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bazs', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         var id1 = json.baz.id;
-        testlib.requests.post('/bazs', {
+        testlib.client.post('bazs', {
             nested: {
                 obj: id1
             },
-        }, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
+        }, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
             test.ok(json.baz.nested);
             test.equal(json.baz.nested.obj.id, id1);
             test.ok(!json.baz.nested.obj.nested);
@@ -32,15 +32,15 @@ exports.testNestedTwice = function(test) {
 };
 
 exports.testNestedTwiceExpand = function(test) {
-    testlib.requests.post('/bazs', {}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bazs', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         var id1 = json.baz.id;
-        testlib.requests.post('/bazs?expand=obj', {
+        testlib.client.post('bazs?expand=obj', {
             nested: {
                 obj: id1
             },
-        }, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
+        }, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
             test.ok(json.baz.nested);
             test.equal(json.baz.nested.obj.id, id1);
             test.ok(!json.baz.nested.obj.nested);
@@ -50,22 +50,22 @@ exports.testNestedTwiceExpand = function(test) {
 };
 
 exports.testNestedThrice = function(test) {
-    testlib.requests.post('/bazs', {}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bazs', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         var id1 = json.baz.id;
-        testlib.requests.post('/bazs', {
+        testlib.client.post('bazs', {
             nested: {
                 obj: id1
             },
-        }, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
+        }, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
             var id2 = json.baz.id;
-            testlib.requests.post('/bazs', {
+            testlib.client.post('bazs', {
                 nested: {
                     obj: id2
                 },
-            }, function(code, json) {
-                test.equal(code, httpStatus.CREATED);
+            }, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.CREATED);
                 test.ok(json.baz.nested);
                 test.equal(json.baz.nested.obj.id, id2);
                 test.ok(!json.baz.nested.obj.nested);
@@ -76,23 +76,23 @@ exports.testNestedThrice = function(test) {
 };
 
 exports.testNestedThriceExpand = function(test) {
-    testlib.requests.post('/bazs', {}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bazs', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         var id1 = json.baz.id;
-        testlib.requests.post('/bazs?expand=obj', {
+        testlib.client.post('bazs?expand=obj', {
             nested: {
                 obj: id1
             },
-        }, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
+        }, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
             test.ok(json.baz.nested);
             var id2 = json.baz.id;
-            testlib.requests.post('/bazs?expand=obj', {
+            testlib.client.post('bazs?expand=obj', {
                 nested: {
                     obj: id2
                 },
-            }, function(code, json) {
-                test.equal(code, httpStatus.CREATED);
+            }, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.CREATED);
                 test.ok(json.baz.nested);
                 test.equal(json.baz.nested.obj.id, id2);
                 test.ok(json.baz.nested.obj.nested);
@@ -104,23 +104,23 @@ exports.testNestedThriceExpand = function(test) {
 };
 
 exports.testNestedSelf = function(test) {
-    testlib.requests.post('/bazs', {}, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    testlib.client.post('bazs', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         var id1 = json.baz.id;
-        testlib.requests.post('/bazs?expand=obj', {
+        testlib.client.post('bazs?expand=obj', {
             nested: {
                 obj: id1
             },
-        }, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
+        }, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
             test.ok(json.baz.nested);
             var id2 = json.baz.id;
-            testlib.requests.post('/bazs/' + id1 + '?expand=obj', {
+            testlib.client.post('bazs/' + id1 + '?expand=obj', {
                 nested: {
                     obj: id2
                 },
-            }, function(code, json) {
-                test.equal(code, httpStatus.OK);
+            }, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.OK);
                 test.ok(json.baz.nested);
                 test.equal(json.baz.nested.obj.id, id2);
                 test.ok(json.baz.nested.obj.nested);

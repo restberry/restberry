@@ -7,13 +7,20 @@ test_module_dirs[0]="auth-google-express-mongoose"
 test_module_dirs[1]="auth-local-express-mongoose"
 test_module_dirs[2]="express-mongoose"
 
+function PRINT_TITLE {
+    title=$1
+    size=$((${#title} + 10))
+    line=`printf "=%.0s" $(seq 1 $size)`
+    echo $line
+    echo "==== $title ===="
+    echo $line
+    echo
+}
+
 for dir in ${test_module_dirs[*]}
 do
 
-    echo "========================================="
-    echo "===== $dir ====="
-    echo "========================================="
-    echo
+    PRINT_TITLE $dir
 
     test_module_dir=$test_dir/$dir
     tests_dir=$test_module_dir/tests
@@ -26,8 +33,8 @@ do
         exit 1
     fi
 
-    export NODE_HOST=`ifconfig | grep 'inet addr:' | grep -v '127.0.0.1' |
-                      cut -d: -f2 | awk '{ print $1}'`
+    export NODE_HOST=`ifconfig | grep 'eth0' -C 2 | grep 'inet addr:' |
+                      grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}'`
     export NODE_PORT=5115
     export NODE_PATH=$test_dir
 

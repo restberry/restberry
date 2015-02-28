@@ -11,8 +11,8 @@ exports.tearDown = testlib.setupTeardown;
 exports.testReadMany = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         testlib.createUser('a' + EMAIL, PASSWORD, function(userId) {
-            testlib.requests.get('/users', function(code, json) {
-                test.equal(code, httpStatus.OK);
+            testlib.client.get('users', function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.OK);
                 test.equal(json.users.length, 2);
                 for (var i in json.users) {
                     var user = json.users[i];
@@ -29,8 +29,8 @@ exports.testReadManyExpand = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         testlib.createUser('a' + EMAIL, PASSWORD, function(userId) {
             var qs = '?expand=user';
-            testlib.requests.get('/users' + qs, function(code, json) {
-                test.equal(code, httpStatus.OK);
+            testlib.client.get('users' + qs, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.OK);
                 test.equal(json.users.length, 2);
                 for (var i in json.users) {
                     var user = json.users[i];
@@ -44,11 +44,11 @@ exports.testReadManyExpand = function(test) {
 };
 
 exports.testCreate = function(test) {
-    testlib.requests.post('/users', {
+    testlib.client.post('users', {
         email: EMAIL,
         password: PASSWORD,
-    }, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
+    }, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
         test.equal(json.user.email, EMAIL);
         test.ok(!json.user.password);
         test.done();
@@ -60,10 +60,10 @@ exports.testCreateConflict = function(test) {
         email: EMAIL,
         password: PASSWORD,
     };
-    testlib.requests.post('/users', d, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
-        testlib.requests.post('/users', d, function(code, json) {
-            test.equal(code, httpStatus.CONFLICT);
+    testlib.client.post('users', d, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
+        testlib.client.post('users', d, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CONFLICT);
             test.done();
         });
     });
@@ -78,10 +78,10 @@ exports.testCreateMany = function(test) {
         email: 'x' + EMAIL,
         password: PASSWORD,
     };
-    testlib.requests.post('/users', d1, function(code, json) {
-        test.equal(code, httpStatus.CREATED);
-        testlib.requests.post('/users', d2, function(code, json) {
-            test.equal(code, httpStatus.CREATED);
+    testlib.client.post('users', d1, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
+        testlib.client.post('users', d2, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
             test.done();
         });
     });
@@ -90,9 +90,9 @@ exports.testCreateMany = function(test) {
 exports.testActionMe = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         testlib.loginUser(EMAIL, PASSWORD, function(userId) {
-            var path = '/users?action=me';
-            testlib.requests.get(path, function(code, json) {
-                test.equal(code, httpStatus.OK);
+            var path = 'users?action=me';
+            testlib.client.get(path, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.OK);
                 test.equal(json.user.id, userId);
                 test.done();
             });
@@ -103,11 +103,11 @@ exports.testActionMe = function(test) {
 exports.testLogin = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         testlib.logoutUser(function() {
-            testlib.requests.post('/login', {
+            testlib.client.post('login', {
                 email: EMAIL,
                 password: PASSWORD,
-            }, function(code) {
-                test.equal(code, httpStatus.OK);
+            }, function(err, res) {
+                test.equal(res.statusCode, httpStatus.OK);
                 test.done();
             });
         });
@@ -116,16 +116,16 @@ exports.testLogin = function(test) {
 
 exports.testWrongLogin = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
-        testlib.requests.post('/login', {
+        testlib.client.post('login', {
             email: 'x' + EMAIL,
             password: PASSWORD,
-        }, function(code) {
-            test.equal(code, httpStatus.BAD_REQUEST);
-            testlib.requests.post('/login', {
+        }, function(err, res) {
+            test.equal(res.statusCode, httpStatus.BAD_REQUEST);
+            testlib.client.post('login', {
                 email: EMAIL,
                 password: 'x' + PASSWORD,
-            }, function(code) {
-                test.equal(code, httpStatus.BAD_REQUEST);
+            }, function(err, res) {
+                test.equal(res.statusCode, httpStatus.BAD_REQUEST);
                 test.done();
             });
         });
@@ -135,8 +135,8 @@ exports.testWrongLogin = function(test) {
 exports.testLogout = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         testlib.logoutUser(function() {
-            testlib.requests.get('/users?action=me', function(code, json) {
-                test.equal(code, httpStatus.UNAUTHORIZED);
+            testlib.client.get('users?action=me', function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.UNAUTHORIZED);
                 testlib.logoutUser(function() {
                     test.done();
                 });
@@ -148,9 +148,9 @@ exports.testLogout = function(test) {
 exports.testUpdateEmail = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {email: 'bajs@bajs.com'};
-        var path = '/users/' + userId;
-        testlib.requests.post(path, d, function(code, json) {
-            test.equal(code, httpStatus.OK);
+        var path = 'users/' + userId;
+        testlib.client.post(path, d, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.OK);
             testlib.loginUser(d.email, PASSWORD, function() {
                 test.done();
             });
@@ -161,14 +161,14 @@ exports.testUpdateEmail = function(test) {
 exports.testUpdateName = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {name: {first: 'first', last: 'last'}};
-        var path = '/users/' + userId;
-        testlib.requests.post(path, d, function(code, json) {
-            test.equal(code, httpStatus.OK);
+        var path = 'users/' + userId;
+        testlib.client.post(path, d, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.OK);
             test.equal(json.user.name.first, 'first');
             test.equal(json.user.name.last, 'last');
             var d = {name: {first: '', last: ''}};
-            testlib.requests.post(path, d, function(code, json) {
-                test.equal(code, httpStatus.OK);
+            testlib.client.post(path, d, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.OK);
                 test.equal(json.user.name.first, '');
                 test.equal(json.user.name.last, '');
                 test.done();
@@ -180,9 +180,9 @@ exports.testUpdateName = function(test) {
 exports.testUpdateIllegalPassword = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {password: 'bajs'};
-        var path = '/users/' + userId;
-        testlib.requests.post(path, d, function(code, json) {
-            test.equal(code, httpStatus.BAD_REQUEST);
+        var path = 'users/' + userId;
+        testlib.client.post(path, d, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.BAD_REQUEST);
             testlib.loginUser(EMAIL, PASSWORD, function() {
                 test.done();
             });
@@ -193,9 +193,9 @@ exports.testUpdateIllegalPassword = function(test) {
 exports.testUpdatePassword = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var d = {password: 'bajsbajs'};
-        var path = '/users/' + userId;
-        testlib.requests.post(path, d, function(code, json) {
-            test.equal(code, httpStatus.OK);
+        var path = 'users/' + userId;
+        testlib.client.post(path, d, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.OK);
             testlib.loginUser(EMAIL, d.password, function() {
                 test.done();
             });
