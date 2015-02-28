@@ -6,6 +6,7 @@ test_dir=$root_dir/tests
 test_module_dirs[0]="auth-google-express-mongoose"
 test_module_dirs[1]="auth-local-express-mongoose"
 test_module_dirs[2]="express-mongoose"
+test_module_dirs[3]="like-minded"
 
 function PRINT_TITLE {
     title=$1
@@ -39,6 +40,7 @@ do
     export NODE_PATH=$test_dir
 
     cd $test_module_dir
+    npm install
     forever start $node_app
     sleep 1
     nodeunit $tests_dir

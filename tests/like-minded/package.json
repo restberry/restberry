@@ -1,0 +1,13 @@
+{
+   "dependencies": {
+        "restberry": "0.3.x",
+        "restberry-auth": "0.2.x",
+        "restberry-auth-local": "0.2.x",
+        "restberry-auth-google": "0.2.x",
+        "restberry-express": "0.2.x",
+        "restberry-mongoose": "0.2.x",
+        "restberry-utils": "0.1.x",
+        "underscore": "1.5.x",
+        "underscore.string": "2.3.x"
+    }
+}
