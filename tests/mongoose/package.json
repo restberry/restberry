@@ -1,0 +1,10 @@
+{
+   "dependencies": {
+        "restberry": "0.3.x",
+        "restberry-mongoose": "0.2.x",
+        "underscore": "1.5.x"
+    },
+    "scripts": {
+        "test": "nodeunit tests"
+    }
+}

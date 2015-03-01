@@ -93,17 +93,21 @@ exports.enableClearData = function(restberry) {
     restberry.routes.addCustomRoute({
         path: '/' + PATH_CLEAR_DATA,
         action: function(req, res, next) {
-            var models = restberry.odm.mongoose.models;
-            var keys = Object.keys(models);
-            utils.forEachAndDone(keys, function(key, iter) {
-                var model = models[key];
-                model.remove(iter);
-            }, function() {
+            exports.clearData(restberry, function() {
                 res.status(httpStatus.NO_CONTENT);
                 restberry.waf.handleRes({}, req, res, next);
             });
         },
     });
+};
+
+exports.clearData = function(restberry, next) {
+    var models = restberry.odm.mongoose.models;
+    var keys = Object.keys(models);
+    utils.forEachAndDone(keys, function(key, iter) {
+        var model = models[key];
+        model.remove(iter);
+    }, next);
 };
 
 exports.session.end();
