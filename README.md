@@ -175,6 +175,12 @@ See [`restberry-router-crud`](https://github.com/materik/restberry-router-crud) 
 npm test
 ```
 
+Add the pre push hook if you want to contribute:
+
+``
+npm run addprepushhook
+``
+
 ## Further reading
 
 I have written an article series on RESTful API design which this package is base upon, you can find the three parts here:

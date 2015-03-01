@@ -6,8 +6,9 @@ test_dir=$root_dir/tests
 test_module_dirs[0]="auth-google-express-mongoose"
 test_module_dirs[1]="auth-local-express-mongoose"
 test_module_dirs[2]="express-mongoose"
-test_module_dirs[3]="like-minded"
-test_module_dirs[4]="tree-branch"
+test_module_dirs[3]="mongoose"
+test_module_dirs[4]="like-minded"
+test_module_dirs[5]="tree-branch"
 
 function PRINT_TITLE {
     title=$1
