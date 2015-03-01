@@ -176,7 +176,6 @@ npm test
 ```
 
 Add the pre push hook if you want to contribute:
-
 ``
 npm run addprepushhook
 ``
