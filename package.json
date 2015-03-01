@@ -1,7 +1,7 @@
 {
     "author": {
         "name": "Mattias Eriksson",
-        "email": "materik@me.com"
+        "email": "thematerik@gmail.com"
     },
     "bugs": {
         "url": "https://github.com/materik/restberry/issues"
@@ -9,7 +9,7 @@
     "contributors": [
         {
             "name": "Mattias Eriksson",
-            "email": "materik@me.com"
+            "email": "thematerik@gmail.com"
         }
     ],
     "dependencies": {
@@ -24,9 +24,15 @@
     "description": "RESTful API Framework",
     "homepage": "http://restberry.com",
     "keywords": [
+        "api",
         "express",
+        "framework",
+        "json",
+        "mongodb",
         "mongoose",
-        "restberry"
+        "rest",
+        "restberry",
+        "restful"
     ],
     "license": "MIT",
     "main": "index.js",
