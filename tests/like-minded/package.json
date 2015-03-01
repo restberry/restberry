@@ -12,6 +12,9 @@
         "underscore.string": "2.3.x"
     },
     "scripts": {
+        "logs": "forever logs app.js",
+        "start": "forever start app.js",
+        "stop": "forever stop app.js",
         "test": "nodeunit tests"
     }
 }

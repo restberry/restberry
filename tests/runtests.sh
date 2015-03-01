@@ -29,8 +29,6 @@ do
 
     test_module_dir=$test_dir/$dir
     tests_dir=$test_module_dir/tests
-    node_app=app.js
-    node_app_path=$test_module_dir/$node_app
 
     if [ ! -d $test_module_dir ]
     then
@@ -45,17 +43,17 @@ do
 
     cd $test_module_dir
     npm install
-    forever start $node_app
+    npm start
     sleep 1
     npm test
 
     if [ "$?" -ne "0" ]
     then
-        forever logs $node_app
+        npm logs
         exit 1
     fi
 
-    forever stop $node_app
+    npm stop
     sleep 1
 
 done
