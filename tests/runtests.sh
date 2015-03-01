@@ -7,6 +7,7 @@ test_module_dirs[0]="auth-google-express-mongoose"
 test_module_dirs[1]="auth-local-express-mongoose"
 test_module_dirs[2]="express-mongoose"
 test_module_dirs[3]="like-minded"
+test_module_dirs[4]="tree-branch"
 
 function PRINT_TITLE {
     title=$1
