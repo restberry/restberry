@@ -10,7 +10,7 @@ var GOOGLE_CALLBACK_HOST_PROD = 'http://like-minded.com'
 
 var API_PATH = '/api/v1';
 var DEBUG = 'true';
-var ENV = process.env.NODE_ENV || ENV_DEV;
+var ENV = ENV_DEV;
 var NAME = 'LIKE-MINDED';
 var PORT = process.env.NODE_PORT || 6000;
 
