@@ -19,6 +19,11 @@ function PRINT_TITLE {
     echo
 }
 
+function POST_INSTALL {
+    rm -r node_modules/restberry
+    ln -s ../../.. node_modules/restberry
+}
+
 cd $test_dir
 npm install
 
@@ -43,6 +48,7 @@ do
 
     cd $test_module_dir
     npm install
+    POST_INSTALL
     npm start
     sleep 1
     npm test
