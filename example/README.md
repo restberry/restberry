@@ -11,12 +11,12 @@ from a City.
 
 We need a CRUD API to achieve this with the following API routes:
 
-- Create a city: POST /cities
-- Add a weather to a city: POST /cities/:id/weathers
-- Get info of a city: GET /cities/:id
-- Get weather from a city: GET /cities/:id/weathers
+- **Create a city:** POST /cities
+- **Add a weather to a city:** POST /cities/:id/weathers
+- **Get info of a city:** GET /cities/:id
+- **Get weather from a city:** GET /cities/:id/weathers
 
-This is a perfect time to use Restberry!
+This is a perfect time to use **Restberry**!
 
 ------
 
@@ -89,6 +89,61 @@ restberry
 
 Here we would just like to set the path to our mongodb database.
 
-Now we can create our models:
+The last thing we have to do is to startup the service by calling ``listen`` of the restberry object:
 
-................
+```
+restberry.listen()
+```
+
+Now we can finally create our models. A model is always recieved and created by calling the ``model`` method of restberry:
+
+```
+restberry.model('City')
+```
+
+Let's define the mongodb schema for this model:
+
+```
+restberry.model('City')
+    .schema({
+        name: {type: String, required: true},
+        location: {
+            longitude: {type: Number},
+            latitude: {type: Number},
+        },
+    })
+```
+
+Pretty straight forward. Now we need to define the API routes for the mode, normally the hardest and most time consuming part of setting up a backend service, but not with Restberry.
+
+```
+restberry.model('City')
+    .routes
+        .addCreateRoute()  // POST /api/v1/cities
+        .addReadRoute()  // GET /api/v1/cities/:id
+```
+
+That is it! Here we have added two routes to the City model, a create route and a read route. These routes handle bad requests, not found, formatting, status codes, and more. Simple as that.
+
+We go about creating the Weather model in the same way:
+
+```
+restberry.model('Weather')
+    .schema({
+        city: {type: restberry.odm.ObjectId, ref: 'City', required: true},
+        date: {type: Date, default: Date.now},
+        tempature: {type: Number, required: true},
+        condition: {type: String, required: true},
+    })
+    .routes
+        .addCreateRoute({  // POST /api/v1/cities/:id/weathers
+            parentModel: restberry.model('City'),
+        })
+        .addReadManyRoute({  // GET /api/v1/cities/:id/weathers
+            parentModel: restberry.model('City'),
+        })
+```
+
+The only difference here is that we are setting the ``parentModel`` property when creating the routes. Restberry will automatically correspond the ``parentModel`` with the ``city`` property of the model object and when creating a weather object set ``city`` automatically with the City object, with the ``id``, in the route.
+
+We are all done! Now you can checkout the ``app.js`` file of this example or you can have a look through the tests. Otherwise go out and create an app of your own.
