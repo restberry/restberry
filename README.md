@@ -184,11 +184,8 @@ npm run addprepushhook
 
 ## Further reading
 
-I have written an article series on RESTful API design which this package is base upon, you can find the three parts here:
-
-- http://materik.tumblr.com/post/98324672516/restful-json-api-design-part-1
-- http://materik.tumblr.com/post/99806761591/restful-json-api-design-part-2
-- http://materik.tumblr.com/post/101938795476/restful-json-api-design-part-3
+I have written an article series on RESTful API design which this package is base upon, you can find the three parts here: [part 1](http://materik.tumblr.com/post/98324672516/restful-json-api-design-part-1), [part 2](http://materik.tumblr.com/post/99806761591/restful-json-api-design-part-2) and
+[part 3](http://materik.tumblr.com/post/101938795476/restful-json-api-design-part-3).
 
 ## Contact
 
