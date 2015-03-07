@@ -25,8 +25,19 @@ function POST_INSTALL {
     ln -s ../../.. node_modules/restberry
 }
 
+PRINT_TITLE "INSTALL TESTS"
+
 cd $test_dir
 npm install
+
+for dir in ${test_module_dirs[*]}
+do
+    test_module_dir=$test_dir/$dir
+    cd $test_module_dir
+    npm install
+done
+
+PRINT_TITLE "RUN TESTS"
 
 for dir in ${test_module_dirs[*]}
 do
