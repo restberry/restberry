@@ -32,7 +32,9 @@ Let's start by defining our ``package.json`` file and our dependencies:
 }
 ```
 
-We are going to use ``express`` as our web framework and ``mongoose`` as our ODM.
+We are going to use ``express 4.12`` as our web framework and ``mongoose 3.8``
+as our ODM. Notice that the restberry module version correspond to the different
+modules' version.
 
 Now we can define our main ``app.js`` file, start by importing the dependencies:
 
@@ -46,13 +48,12 @@ Next we need to setup our restberry object. First we are able to configure the
 app the way we like:
 
 ```
-restberry
-    .config({
-        apiPath: '/api/v1',
-        env: 'prod',
-        name: 'WEATHER APP'
-        port: 5000,
-    })
+restberry.config({
+    apiPath: '/api/v1',
+    env: 'prod',
+    name: 'WEATHER APP'
+    port: 5000,
+})
 ```
 
 Here I want every path to start with ``/api/v1`` and I want the port to be
@@ -63,24 +64,15 @@ Next we want to let restberry know that we want to use ``express`` and how we
 want to configure it.
 
 ```
-restberry
-    .use(restberryExpress.use(function(waf) {
-        var app = waf.app;
-        app.use(...);
-    })
+restberry.use(restberryExpress.use())
 ```
-
-The callback from the ``restberryExpress`` use call is a web application
-framework object, ``waf``, containing express and an express object: ``app``.
-Inside this callback you can setup your service the way you like.
 
 Now we want to let restberry know that we also like to use ``mongoose``.
 
 ```
-restberry
-    .use(restberryMongoose.use(function(odm) {
-        odm.connect('mongodb://localhost/weather-app');
-    })
+restberry.use(restberryMongoose.use(function(odm) {
+    odm.connect('mongodb://localhost/weather-app');
+})
 ```
 
 Here we would just like to set the path to our mongodb database.
