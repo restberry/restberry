@@ -6,7 +6,7 @@ Restberry
 [![NPM](https://nodei.co/npm/restberry.png?downloads=true)](https://nodei.co/npm/restberry/)
 
 Framework for setting up RESTful APIs. Define your models and setup CRUD API
-calls without needing to write any code (see Usage). All API calls will handle
+calls without needing to write any code (see [Usage](#usage)). All API calls will handle
 and identify issues and throw necessary HTTP responses and easy to debug error
 responses. Restberry also handles authentication and permission checks and
 throws appropriate errors.
