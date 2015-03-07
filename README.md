@@ -17,12 +17,9 @@ throws appropriate errors.
 npm install restberry
 ```
 
-## Apps using Restberry in production
+## Example
 
-* [Legacy](http://thelegacy.io)
-* [SalesBranch](http://sales-branch.com)
-
-**NOTE:** Let me know if you want your app to be put on this list.
+See [``example``](/example) for a detailed documentation of how you setup a Restberry app.
 
 ## Usage
 
