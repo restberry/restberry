@@ -33,10 +33,14 @@ npm install
 
 for dir in ${test_module_dirs[*]}
 do
+
+    PRINT_TITLE $dir
+
     test_module_dir=$test_dir/$dir
     cd $test_module_dir
     npm install
     POST_INSTALL
+
 done
 
 PRINT_TITLE "RUN TESTS"
