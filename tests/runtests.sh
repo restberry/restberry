@@ -14,6 +14,7 @@ function PRINT_TITLE {
     title=$1
     size=$((${#title} + 10))
     line=`printf "=%.0s" $(seq 1 $size)`
+    echo
     echo $line
     echo "==== $title ===="
     echo $line
@@ -35,6 +36,7 @@ do
     test_module_dir=$test_dir/$dir
     cd $test_module_dir
     npm install
+    POST_INSTALL
 done
 
 PRINT_TITLE "RUN TESTS"
@@ -59,8 +61,6 @@ do
     export NODE_PATH=$test_dir
 
     cd $test_module_dir
-    npm install
-    POST_INSTALL
     npm start
     sleep 1
     npm test

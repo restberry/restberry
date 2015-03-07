@@ -10,12 +10,7 @@ restberry
         port: process.env.NODE_PORT || 6000,
         verbose: true,
     })
-    .use(restberryExpress.use(function(waf) {
-        var app = waf.app;
-        var express = waf.express;
-        app.use(express.json());
-        app.use(express.urlencoded());
-    }))
+    .use(restberryExpress.use())
     .use(restberryMongoose.use(function(odm) {
         odm.connect('mongodb://localhost/restberry-test');
     }))

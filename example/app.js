@@ -9,14 +9,7 @@ restberry
         name: 'WEATHER APP',
         port: 5000,
     })
-    .use(restberryExpress.use(function(waf) {
-        var app = waf.app;
-        var express = waf.express;
-        app.configure(function() {
-            app.use(express.json());
-            app.use(express.urlencoded());
-        });
-    })
+    .use(restberryExpress.use())
     .use(restberryMongoose.use(function(odm) {
         odm.connect('mongodb://localhost/weather-app');
     })

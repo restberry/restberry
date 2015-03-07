@@ -7,7 +7,6 @@ var restberryMongoose = require('restberry-mongoose');
 var testlib = require(process.env.NODE_PATH + '/testlib');
 var utils = require('restberry-utils');
 
-
 restberry
     .config(config.restberry)
     .use(restberryAuth

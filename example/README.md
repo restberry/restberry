@@ -26,8 +26,8 @@ Let's start by defining our ``package.json`` file and our dependencies:
 {
     "dependencies": {
         "restberry": "0.3.x",
-        "restberry-express": "0.3.x",
-        "restberry-mongoose": "0.3.x"
+        "restberry-express": "4.12.x",
+        "restberry-mongoose": "3.8.x"
     }
 }
 ```
@@ -66,11 +66,7 @@ want to configure it.
 restberry
     .use(restberryExpress.use(function(waf) {
         var app = waf.app;
-        var express = waf.express;
-        app.configure(function() {
-            app.use(express.json());
-            app.use(express.urlencoded());
-        });
+        app.use(...);
     })
 ```
 

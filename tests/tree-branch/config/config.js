@@ -1,8 +1,7 @@
 var auth = require('./auth');
 var express = require('./express');
 
-
-var DB = 'mongodb://localhost/sales-branch';
+var DB = 'mongodb://localhost/restberry-test';
 var DEBUG = 'true';
 var ENV_DEV = 'dev';
 var ENV_PROD = 'prod';
