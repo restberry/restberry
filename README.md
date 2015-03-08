@@ -5,6 +5,8 @@
 
 [![NPM](https://nodei.co/npm/restberry.png?downloads=true)](https://nodei.co/npm/restberry/)
 
+> Restberry doesn't replace Express, it compliments Express and other Web Application Frameworks!
+
 Framework for setting up RESTful APIs. Define your models and setup CRUD API
 calls without needing to write any code (see [Usage](#usage)). All API calls will handle
 and identify issues and throw necessary HTTP responses and easy to debug error
