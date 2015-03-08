@@ -45,5 +45,5 @@
         "addprepushhook": "ln -s ../../tests/runtests.sh .git/hooks/pre-push",
         "test": "./tests/runtests.sh"
     },
-    "version": "0.3.18"
+    "version": "0.3.19"
 }
