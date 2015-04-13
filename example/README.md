@@ -56,7 +56,7 @@ restberry.config({
 })
 ```
 
-Here I want every path to start with ``/api/v1`` and I want the port to be
+Here I want every path to start with ``/api/v1`` and we want the port to be
 ``5000``. The env and name properties will only show up in the log so to easily
 identify the environment.
 
@@ -77,13 +77,13 @@ restberry.use(restberryMongoose.use(function(odm) {
 
 Here we would just like to set the path to our mongodb database.
 
-The last thing we have to do is to startup the service by calling ``listen`` of the restberry object:
+The last thing we have to do is to startup the service by calling ``listen`` on the ``restberry`` object:
 
 ```
 restberry.listen()
 ```
 
-Now we can finally create our models. A model is always recieved and created by calling the ``model`` method of restberry:
+Now we can finally create our models. A model is always recieved and created by calling the ``model`` method of ``restberry``:
 
 ```
 restberry.model('City')
@@ -102,7 +102,7 @@ restberry.model('City')
     })
 ```
 
-Pretty straight forward. Now we need to define the API routes for the mode, normally the hardest and most time consuming part of setting up a backend service, but not with Restberry.
+Pretty straight forward. Now we need to define the API routes for the model, normally the hardest and most time consuming part of setting up a backend service, but not with Restberry.
 
 ```
 restberry.model('City')
@@ -111,7 +111,7 @@ restberry.model('City')
         .addReadRoute()  // GET /api/v1/cities/:id
 ```
 
-That is it! Here we have added two routes to the City model, a create route and a read route. These routes handle bad requests, not found, formatting, status codes, and more. Simple as that.
+That is it! Here we have added two routes to the City model, a create route and a read route. These routes handle bad requests, not found, formatting, status codes, and more. Simple as that!
 
 We go about creating the Weather model in the same way:
 
@@ -132,6 +132,8 @@ restberry.model('Weather')
         })
 ```
 
-The only difference here is that we are setting the ``parentModel`` property when creating the routes. Restberry will automatically correspond the ``parentModel`` with the ``city`` property of the model object and when creating a weather object set ``city`` automatically with the City object, with the ``id``, in the route.
+The only difference here is that we are setting the ``parentModel`` property when creating the routes. Restberry will automatically correspond the ``parentModel`` with the ``city`` property of the model object and when creating a weather object set ``city`` automatically to the City object, with the ``id``, in the route.
 
-We are all done! Now you can checkout the ``app.js`` file of this example or you can have a look through the tests. Otherwise go out and create an app of your own.
+We are all done! Now you can checkout the ``app.js`` file of this example or you can have a look through the tests of Restberry. Otherwise, go out and create an app of your own.
+
+Have fun!
