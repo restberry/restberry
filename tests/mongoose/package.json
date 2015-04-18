@@ -5,6 +5,8 @@
         "underscore": "1.5.x"
     },
     "scripts": {
+        "start": "echo start",
+        "stop": "echo stop",
         "test": "nodeunit tests"
     }
 }
