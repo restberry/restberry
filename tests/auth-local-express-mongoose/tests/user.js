@@ -132,6 +132,18 @@ exports.testWrongLogin = function(test) {
     });
 };
 
+exports.testMissingPassword = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        testlib.client.post('login', {
+            email: 'x' + EMAIL,
+        }, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.BAD_REQUEST);
+            test.ok(json.error);
+            test.done();
+        });
+    });
+};
+
 exports.testLogout = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         testlib.logoutUser(function() {
