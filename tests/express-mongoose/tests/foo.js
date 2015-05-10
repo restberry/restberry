@@ -1,6 +1,6 @@
+var _ = require('underscore');
 var httpStatus = require('http-status');
 var testlib = require(process.env.NODE_PATH + '/testlib');
-
 
 exports.setUp = testlib.setupTeardown;
 exports.tearDown = testlib.setupTeardown;
@@ -25,6 +25,72 @@ exports.testReadMany = function(test) {
                         test.ok(!foo.name);
                     }
                     test.ok(json.hrefs.current);
+                    test.done();
+                });
+            });
+        });
+    });
+};
+
+exports.testReadManyPaginator = function(test) {
+    var createFeeds = function(nbrOfFeeds, barId, callback) {
+        var d = {name: 'test' + nbrOfFeeds};
+        var path = 'bars/' + barId + '/foos';
+        testlib.client.post(path, d, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
+            if (--nbrOfFeeds) {
+                createFeeds(nbrOfFeeds, barId, callback);;
+            } else {
+                callback();
+            }
+        });
+    };
+    testlib.client.post('bars', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
+        var barId = json.bar.id;
+        var total = 10;
+        createFeeds(total, barId, function() {
+            var limit = 5;
+            var path = 'bars/' + barId + '/foos?limit=' + limit;
+            testlib.client.get(path, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.OK);
+                test.equal(json.foos.length, limit);
+                test.equal(json.limit, limit);
+                test.equal(json.total, total);
+                test.done();
+            });
+        });
+    });
+};
+
+exports.testReadManyPaginatorSort = function(test) {
+    var createFeeds = function(nbrOfFeeds, barId, callback) {
+        var d = {name: 'test' + (nbrOfFeeds < 10 ? '0' : '') + nbrOfFeeds};
+        var path = 'bars/' + barId + '/foos';
+        testlib.client.post(path, d, function(err, res, json) {
+            test.equal(res.statusCode, httpStatus.CREATED);
+            if (--nbrOfFeeds) {
+                createFeeds(nbrOfFeeds, barId, callback);;
+            } else {
+                callback();
+            }
+        });
+    };
+    testlib.client.post('bars', {}, function(err, res, json) {
+        test.equal(res.statusCode, httpStatus.CREATED);
+        var barId = json.bar.id;
+        var total = 10;
+        createFeeds(total, barId, function() {
+            var limit = 5;
+            var path = 'bars/' + barId + '/foos?expand=foo&limit=' + limit;
+            var pathAsc = path + '&sort=name';
+            var pathDesc = path + '&sort=-name';
+            testlib.client.get(pathAsc, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.OK);
+                test.equal(_.first(json.foos).name, 'test01');
+                testlib.client.get(pathDesc, function(err, res, json) {
+                    test.equal(res.statusCode, httpStatus.OK);
+                    test.equal(_.first(json.foos).name, 'test' + total);
                     test.done();
                 });
             });
