@@ -5,7 +5,7 @@ var restberryMongoose = require('restberry-mongoose');
 var restberryAuth = require('restberry-auth');
 var restberryAuthLocal = require('restberry-auth-local');
 var session = require('express-session');
-var testlib = require(process.env.NODE_PATH + '/testlib');
+var testlib = require('../testlib');
 
 restberry
     .config({

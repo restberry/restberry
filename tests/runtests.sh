@@ -1,14 +1,17 @@
 #!/bin/bash
 
 root_dir=`pwd`
-test_dir=$root_dir/tests
 
-test_module_dirs[0]="auth-google-express-mongoose"
-test_module_dirs[1]="auth-local-express-mongoose"
-test_module_dirs[2]="express-mongoose"
-test_module_dirs[3]="mongoose"
-test_module_dirs[4]="like-minded"
-test_module_dirs[5]="tree-branch"
+if [ -c $RESTBERRY_TEST ]
+then
+    test_module_dirs[0]="auth-local-express-mongoose"
+    test_module_dirs[1]="express-mongoose"
+    test_module_dirs[2]="mongoose"
+    test_module_dirs[3]="like-minded"
+    test_module_dirs[4]="tree-branch"
+else
+    test_module_dirs[0]=$RESTBERRY_TEST
+fi
 
 function PRINT_TITLE {
     title=$1
@@ -28,7 +31,6 @@ function POST_INSTALL {
 
 PRINT_TITLE "INSTALL TESTS"
 
-cd $test_dir
 npm install
 
 for dir in ${test_module_dirs[*]}
@@ -36,7 +38,7 @@ do
 
     PRINT_TITLE $dir
 
-    test_module_dir=$test_dir/$dir
+    test_module_dir=$root_dir/$dir
     cd $test_module_dir
     npm install
     POST_INSTALL
@@ -50,7 +52,7 @@ do
 
     PRINT_TITLE $dir
 
-    test_module_dir=$test_dir/$dir
+    test_module_dir=$root_dir/$dir
     tests_dir=$test_module_dir/tests
 
     if [ ! -d $test_module_dir ]
@@ -62,10 +64,17 @@ do
     export NODE_HOST=`ifconfig | grep 'eth0' -C 2 | grep 'inet addr:' |
                       grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}'`
     export NODE_PORT=5115
-    export NODE_PATH=$test_dir
 
     cd $test_module_dir
+    npm stop &> /dev/null
     npm start
+
+    if [ "$?" -ne "0" ]
+    then
+        npm logs
+        exit 1
+    fi
+
     sleep 1
     npm test
 

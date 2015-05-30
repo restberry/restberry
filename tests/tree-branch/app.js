@@ -4,7 +4,7 @@ var restberryAuth = require('restberry-auth');
 var restberryAuthLocal = require('restberry-auth-local');
 var restberryExpress = require('restberry-express');
 var restberryMongoose = require('restberry-mongoose');
-var testlib = require(process.env.NODE_PATH + '/testlib');
+var testlib = require('../testlib');
 var utils = require('restberry-utils');
 
 restberry

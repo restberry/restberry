@@ -1,6 +1,5 @@
 var httpStatus = require('http-status');
-var testlib = require(process.env.NODE_PATH + '//testlib');
-
+var testlib = require('../../testlib');
 
 var EMAIL = 'test@restberry.com';
 var PASSWORD = 'asdfasdf';

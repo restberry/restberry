@@ -4,5 +4,9 @@
         "restberry-utils": "0.1.x",
         "request-json": "0.5.x",
         "underscore": "1.5.x"
+    },
+    "scripts": {
+        "start": "npm test",
+        "test": "./runtests.sh"
     }
 }

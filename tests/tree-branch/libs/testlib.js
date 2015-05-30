@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var httpStatus = require('http-status');
-var testlib = require(process.env.NODE_PATH + '/testlib');
+var testlib = require('../../testlib');
 
 exports = _.defaults(exports, testlib);
 

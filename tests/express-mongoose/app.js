@@ -1,8 +1,7 @@
 var restberry = require('restberry');
 var restberryExpress = require('restberry-express');
 var restberryMongoose = require('restberry-mongoose');
-var testlib = require(process.env.NODE_PATH + '/testlib');
-
+var testlib = require('../testlib');
 
 restberry
     .config({

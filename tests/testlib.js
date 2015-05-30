@@ -16,7 +16,7 @@ var PORT = process.env.NODE_PORT || 6000;
 var URL = util.format('http://%s:%s%s', HOST, PORT, API_PATH);
 
 exports.setupTeardown = function(next) {
-    client.get(PATH_CLEAR_DATA, function(err, res) {
+    client.get(PATH_CLEAR_DATA, function(err, res, body) {
         next();
     });
 };

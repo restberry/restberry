@@ -42,8 +42,7 @@
         "url": "https://github.com/materik/restberry.git"
     },
     "scripts": {
-        "addprepushhook": "ln -s ../../tests/runtests.sh .git/hooks/pre-push",
-        "test": "./tests/runtests.sh"
+        "test": "cd tests && npm test"
     },
     "version": "0.3.25"
 }
