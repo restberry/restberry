@@ -125,10 +125,10 @@ restberry.model('Weather')
     })
     .routes
         .addCreateRoute({  // POST /api/v1/cities/:id/weathers
-            parentModel: restberry.model('City'),
+            parentModel: 'City',
         })
         .addReadManyRoute({  // GET /api/v1/cities/:id/weathers
-            parentModel: restberry.model('City'),
+            parentModel: 'City',
         })
 ```
 

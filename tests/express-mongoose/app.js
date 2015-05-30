@@ -31,11 +31,11 @@ restberry.model('Foo')
     })
     .routes
         .addCreateRoute({
-            parentModel: restberry.model('Bar'),
+            parentModel: 'Bar',
         })
         .addReadRoute()
         .addReadManyRoute({
-            parentModel: restberry.model('Bar'),
+            parentModel: 'Bar',
         })
 
 restberry.model('Baz')

@@ -55,7 +55,7 @@ restberry.model('Bar')
         name: {type: String},
     })
     .routes.addCRUDRoutes({
-        parentModel: restberry.model('Foo'),
+        parentModel: 'Foo',
     });
 
 ```
