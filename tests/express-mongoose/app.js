@@ -48,4 +48,17 @@ restberry.model('Baz')
         .addPartialUpdateRoute()
         .addReadRoute()
 
+restberry.model('FooBar')
+    .schema({
+        list: [
+            {
+                a: {type: Number},
+                b: {type: String},
+            }
+        ],
+    })
+    .routes
+        .addCreateRoute()
+        .addReadManyRoute()
+
 testlib.enableClearData(restberry);
