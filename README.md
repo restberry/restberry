@@ -1,7 +1,7 @@
 [Restberry](http://restberry.com)
 =================================
 
-> ### Restberry doesn't replace Express, it complements Express and other Web Application Frameworks!
+> ## Restberry doesn't replace Express, it complements Express and other Web Application Frameworks!
 
 [![](https://img.shields.io/npm/v/restberry.svg)](https://www.npmjs.com/package/restberry) [![](https://img.shields.io/npm/dm/restberry.svg)](https://www.npmjs.com/package/restberry) [![](https://travis-ci.org/materik/restberry.svg)](https://travis-ci.org/materik/restberry)
 
@@ -27,20 +27,12 @@ See [``example``](/example) for a detailed documentation of how you setup a Rest
 
 ```
 var restberry = require('restberry');
-var restberryExpress = require('restberry-express');
-var resbterryMongoose = require('restberry-mongoose');
 
 restberry
     .config({
         apiPath: '/api/v1',
         port: 5000,
     })
-    .use(restberryExpress.use(function(waf) {
-        ...
-    }))
-    .use(restberryMongoose.use(function(odm) {
-        ...
-    }))
     .listen();
 
 restberry.model('Foo')
@@ -60,8 +52,11 @@ restberry.model('Bar')
 
 ```
 
-**NOTE:** See more usages in the tests and dependent packages like:
-[`restberry-express`](https://github.com/materik/restberry-express) and [`restberry-mongoose`](https://github.com/materik/restberry-mongoose).
+**NOTE:** By default, Restberry integrates with ExpressJS and Mongoose but it
+can be hooked up with other packages. See more usages in the tests and dependent
+packages like:
+[`restberry-express`](https://github.com/materik/restberry-express) and
+[`restberry-mongoose`](https://github.com/materik/restberry-mongoose).
 
 ## Response examples
 
