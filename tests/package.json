@@ -8,6 +8,6 @@
     "scripts": {
         "postinstall": "./install.sh",
         "start": "npm install && npm test",
-        "test": "./runtests.sh"
+        "test": "./test.sh"
     }
 }

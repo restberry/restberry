@@ -1,13 +1,15 @@
 #!/bin/bash
 
 source ./util.sh
-PRINT_TITLE "RUN TESTS"
+
+PRINT_TITLE "TEST = $NODE_HOST:$NODE_PORT" "====="
 
 npm stopall &> /dev/null
 
 for dir in ${test_module_dirs[*]}
 do
 
+    echo
     PRINT_TITLE $dir
 
     test_module_dir=$root_dir/$dir
@@ -18,10 +20,6 @@ do
         echo "couldn't find $test_module_dir";
         exit 1
     fi
-
-    export NODE_HOST=`ifconfig | grep 'eth0' -C 2 | grep 'inet addr:' |
-                      grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}'`
-    export NODE_PORT=5115
 
     cd $test_module_dir
     npm start

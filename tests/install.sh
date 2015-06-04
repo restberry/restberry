@@ -6,12 +6,15 @@ function POST_INSTALL {
 }
 
 source ./util.sh
+
 PRINT_TITLE "INSTALL TESTS"
 
 for dir in ${test_module_dirs[*]}
 do
 
+    echo
     PRINT_TITLE $dir
+    echo
 
     test_module_dir=$root_dir/$dir
     cd $test_module_dir
