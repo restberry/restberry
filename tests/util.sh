@@ -29,6 +29,7 @@ function PRINT_TITLE {
     len=$(($title_len + 2 * $side_len + 2))
     line=`printf "=%.0s" $(seq 1 $len)`
 
+    echo
     echo $line
     echo "$side $title $side"
     echo $line

@@ -44,7 +44,7 @@
         "url": "https://github.com/materik/restberry.git"
     },
     "scripts": {
-        "test": "cd tests && npm test"
+        "test": "cd tests && npm start"
     },
     "version": "0.3.27"
 }
