@@ -19,6 +19,7 @@
         "restberry-logger": "0.1.x",
         "restberry-modules": "0.2.x",
         "restberry-mongoose": "3.8.x",
+        "restberry-restify": "3.0.x",
         "restberry-router-crud": "0.1.x",
         "restberry-utils": "0.1.x",
         "underscore": "1.8.x"
@@ -46,5 +47,5 @@
     "scripts": {
         "test": "cd tests && npm start"
     },
-    "version": "0.3.27"
+    "version": "0.3.28"
 }
