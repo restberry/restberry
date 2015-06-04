@@ -2,7 +2,7 @@
 
 source ./util.sh
 
-PRINT_TITLE "TEST = $NODE_HOST:$NODE_PORT" "====="
+PRINT_TITLE "TEST $NODE_PORT" "====="
 
 npm stopall &> /dev/null
 
@@ -17,7 +17,7 @@ do
 
     if [ ! -d $test_module_dir ]
     then
-        echo "couldn't find $test_module_dir";
+        echo "couldn't find $test_module_dir"
         exit 1
     fi
 
@@ -31,7 +31,7 @@ do
         exit 1
     fi
 
-    sleep 3
+    sleep $NODE_SLEEP
     npm test
 
     if [ "$?" -ne "0" ]
@@ -42,6 +42,6 @@ do
     fi
 
     npm stop
-    sleep 1
+    sleep $NODE_SLEEP
 
 done

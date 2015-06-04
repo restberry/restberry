@@ -2,9 +2,8 @@
 
 root_dir=`pwd`
 
-export NODE_HOST=`ifconfig | grep 'eth0' -C 2 | grep 'inet addr:' |
-                  grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}'`
 export NODE_PORT=5115
+export NODE_SLEEP=5
 
 if [ -c $RESTBERRY_TEST ]
 then
