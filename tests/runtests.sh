@@ -5,11 +5,13 @@ root_dir=`pwd`
 if [ -c $RESTBERRY_TEST ]
 then
     test_module_dirs[0]="auth-local-express-mongoose"
-    test_module_dirs[1]="default"
-    test_module_dirs[2]="express-mongoose"
-    test_module_dirs[3]="mongoose"
-    test_module_dirs[4]="like-minded"
-    test_module_dirs[5]="tree-branch"
+    test_module_dirs[1]="auth-local-restify-mongoose"
+    test_module_dirs[2]="default"
+    test_module_dirs[3]="express-mongoose"
+    test_module_dirs[4]="mongoose"
+    test_module_dirs[5]="like-minded"
+    test_module_dirs[6]="restify-mongoose"
+    test_module_dirs[7]="tree-branch"
 else
     test_module_dirs[0]=$RESTBERRY_TEST
 fi

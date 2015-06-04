@@ -1,0 +1,14 @@
+{
+   "dependencies": {
+        "http-status": "0.1.x",
+        "restberry": "0.3.x",
+        "restberry-mongoose": "3.8.x",
+        "restberry-restify": "0.0.x"
+    },
+    "scripts": {
+        "logs": "forever logs app.js",
+        "start": "forever start app.js",
+        "stop": "forever stop app.js",
+        "test": "nodeunit tests"
+    }
+}
