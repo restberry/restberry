@@ -1,6 +1,4 @@
 var restberry = require('restberry');
-var restberryExpress = require('restberry-express');
-var restberryMongoose = require('restberry-mongoose');
 
 restberry
     .config({
@@ -9,8 +7,8 @@ restberry
         name: 'WEATHER APP',
         port: 5000,
     })
-    .use(restberryExpress.use())
-    .use(restberryMongoose.use(function(odm) {
+    .use('express')
+    .use('mongoose', function(odm) {
         odm.connect('mongodb://localhost/weather-app');
     })
     .listen();

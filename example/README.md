@@ -40,8 +40,6 @@ Now we can define our main ``app.js`` file, start by importing the dependencies:
 
 ```
 var restberry = require('restberry');
-var restberryExpress = require('restberry-express');
-var restberryMongoose = require('restberry-mongoose');
 ```
 
 Next we need to setup our restberry object. First we are able to configure the
@@ -60,17 +58,17 @@ Here I want every path to start with ``/api/v1`` and we want the port to be
 ``5000``. The env and name properties will only show up in the log so to easily
 identify the environment.
 
-Next we want to let restberry know that we want to use ``express`` and how we
-want to configure it.
+Next we want to let restberry know that we want to use ``express``.
 
 ```
-restberry.use(restberryExpress.use())
+restberry.use('express');
 ```
 
-Now we want to let restberry know that we also like to use ``mongoose``.
+Now we want to let restberry know that we also like to use ``mongoose`` and how
+we want to configure it.
 
 ```
-restberry.use(restberryMongoose.use(function(odm) {
+restberry.use('mongoose', function(odm) {
     odm.connect('mongodb://localhost/weather-app');
 })
 ```
