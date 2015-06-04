@@ -3,10 +3,11 @@
         "http-status": "0.1.x",
         "restberry-utils": "0.1.x",
         "request-json": "0.5.x",
-        "underscore": "1.5.x"
+        "underscore": "1.8.x"
     },
     "scripts": {
-        "start": "npm test",
+        "postinstall": "./install.sh",
+        "start": "npm install && npm test",
         "test": "./runtests.sh"
     }
 }

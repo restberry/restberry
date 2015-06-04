@@ -1,53 +1,6 @@
 #!/bin/bash
 
-root_dir=`pwd`
-
-if [ -c $RESTBERRY_TEST ]
-then
-    test_module_dirs[0]="auth-local-express-mongoose"
-    test_module_dirs[1]="auth-local-restify-mongoose"
-    test_module_dirs[2]="default"
-    test_module_dirs[3]="express-mongoose"
-    test_module_dirs[4]="mongoose"
-    test_module_dirs[5]="like-minded"
-    test_module_dirs[6]="restify-mongoose"
-    test_module_dirs[7]="tree-branch"
-else
-    test_module_dirs[0]=$RESTBERRY_TEST
-fi
-
-function PRINT_TITLE {
-    title=$1
-    size=$((${#title} + 10))
-    line=`printf "=%.0s" $(seq 1 $size)`
-    echo
-    echo $line
-    echo "==== $title ===="
-    echo $line
-    echo
-}
-
-function POST_INSTALL {
-    rm -r node_modules/restberry
-    ln -s ../../.. node_modules/restberry
-}
-
-PRINT_TITLE "INSTALL TESTS"
-
-npm install
-
-for dir in ${test_module_dirs[*]}
-do
-
-    PRINT_TITLE $dir
-
-    test_module_dir=$root_dir/$dir
-    cd $test_module_dir
-    npm install
-    POST_INSTALL
-
-done
-
+source ./util.sh
 PRINT_TITLE "RUN TESTS"
 
 for dir in ${test_module_dirs[*]}

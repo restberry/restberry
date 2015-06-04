@@ -3,7 +3,7 @@
         "http-status": "0.1.x",
         "restberry": "0.3.x",
         "restberry-mongoose": "3.8.x",
-        "restberry-restify": "0.0.x"
+        "restberry-restify": "3.0.x"
     },
     "scripts": {
         "logs": "forever logs app.js",
