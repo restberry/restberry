@@ -46,5 +46,5 @@
     "scripts": {
         "test": "cd tests && npm test"
     },
-    "version": "0.3.26"
+    "version": "0.3.27"
 }
