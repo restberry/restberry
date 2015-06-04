@@ -84,7 +84,9 @@ exports.session = {
 
     start: function(res) {
         var cookie = exports.session.extractCookie(res);
-        if (cookie)  exports.session.setCookie(cookie);
+        if (cookie) {
+            exports.session.setCookie(cookie);
+        }
     },
 
 };

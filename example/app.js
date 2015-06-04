@@ -23,7 +23,7 @@ restberry.model('City')
     })
     .routes
         .addCreateRoute()  // POST /api/v1/cities
-        .addReadRoute()  // GET /api/v1/cities/:id
+        .addReadRoute();  // GET /api/v1/cities/:id
 
 var CONDITIONS = [
     'Cloudy',
@@ -43,4 +43,4 @@ restberry.model('Weather')
         })
         .addReadManyRoute({  // GET /api/v1/cities/:id/weathers
             parentModel: 'City',
-        })
+        });

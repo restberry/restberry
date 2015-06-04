@@ -25,6 +25,10 @@
         "underscore": "1.8.x"
     },
     "description": "RESTful API Framework",
+    "devDependencies": {
+        "jscs": "1.12.x",
+        "jshint": "2.6.x"
+    },
     "homepage": "http://restberry.com",
     "keywords": [
         "api",
@@ -45,7 +49,8 @@
         "url": "https://github.com/materik/restberry.git"
     },
     "scripts": {
-        "test": "cd tests && npm start"
+        "test": "cd tests && npm start",
+        "validate": "jscs **/*.js && jshint **/*.js"
     },
     "version": "0.3.28"
 }

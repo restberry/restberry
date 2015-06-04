@@ -31,7 +31,7 @@ do
         exit 1
     fi
 
-    sleep 1
+    sleep 3
     npm test
 
     if [ "$?" -ne "0" ]
