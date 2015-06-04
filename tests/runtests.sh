@@ -3,6 +3,8 @@
 source ./util.sh
 PRINT_TITLE "RUN TESTS"
 
+npm stopall &> /dev/null
+
 for dir in ${test_module_dirs[*]}
 do
 
@@ -22,12 +24,12 @@ do
     export NODE_PORT=5115
 
     cd $test_module_dir
-    npm stop &> /dev/null
     npm start
 
     if [ "$?" -ne "0" ]
     then
-        npm logs
+        npm run logs
+        npm stop
         exit 1
     fi
 
@@ -36,7 +38,8 @@ do
 
     if [ "$?" -ne "0" ]
     then
-        npm logs
+        npm run logs
+        npm stop
         exit 1
     fi
 
