@@ -2,7 +2,7 @@
 
 source ./util.sh
 
-PRINT_TITLE "TEST $NODE_PORT" "====="
+PRINT_TITLE "TEST :$NODE_PORT" "====="
 
 npm stopall &> /dev/null
 
