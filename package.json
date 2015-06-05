@@ -52,5 +52,5 @@
         "test": "cd tests && npm start",
         "validate": "jscs **/*.js && jshint **/*.js"
     },
-    "version": "0.3.28"
+    "version": "0.3.29"
 }
