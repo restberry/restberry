@@ -9,7 +9,7 @@
         "restberry-auth-google": "0.2.x",
         "restberry-express": "4.12.x",
         "restberry-mongoose": "3.8.x",
-        "restberry-utils": "0.1.x",
+        "restberry-utils": "1.0.x",
         "underscore": "1.8.x",
         "underscore.string": "2.3.x"
     },

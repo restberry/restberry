@@ -1,7 +1,7 @@
 {
     "dependencies": {
         "http-status": "0.1.x",
-        "restberry-utils": "0.1.x",
+        "restberry-utils": "1.0.x",
         "request-json": "0.5.x",
         "underscore": "1.8.x"
     },
