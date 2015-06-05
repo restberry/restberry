@@ -1,7 +1,7 @@
 [Restberry](http://restberry.com)
 =================================
 
-> ## Restberry doesn't replace Express, it complements Express and other Web Application Frameworks!
+> ## Restberry works with both Express and Restify!
 
 [![](https://img.shields.io/npm/v/restberry.svg)](https://www.npmjs.com/package/restberry) [![](https://img.shields.io/npm/dm/restberry.svg)](https://www.npmjs.com/package/restberry) [![](https://travis-ci.org/materik/restberry.svg)](https://travis-ci.org/materik/restberry)
 
