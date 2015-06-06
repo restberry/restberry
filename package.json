@@ -14,7 +14,7 @@
     ],
     "dependencies": {
         "qs": "2.2.x",
-        "restberry-errors": "0.2.x",
+        "restberry-errors": "1.0.x",
         "restberry-express": "4.12.x",
         "restberry-logger": "1.0.x",
         "restberry-modules": "0.2.x",
@@ -52,5 +52,5 @@
         "test": "cd tests && npm start",
         "validate": "jscs **/*.js && jshint **/*.js"
     },
-    "version": "0.3.30"
+    "version": "0.3.31"
 }
