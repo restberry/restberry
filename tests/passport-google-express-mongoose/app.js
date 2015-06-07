@@ -2,8 +2,8 @@ var cookieParser = require('cookie-parser');
 var restberry = require('restberry');
 var restberryExpress = require('restberry-express');
 var restberryMongoose = require('restberry-mongoose');
-var restberryAuth = require('restberry-auth');
-var restberryAuthGoogle = require('restberry-auth-google');
+var restberryPassport = require('restberry-passport');
+var restberryPassportGoogle = require('restberry-passport-google');
 var session = require('express-session');
 var testlib = require('../testlib');
 
@@ -13,7 +13,7 @@ restberry
         port: process.env.NODE_PORT || 6000,
         verbose: true,
     })
-    .use(restberryExpress.use(function(waf) {
+    .use(restberryExpress.config(function(waf) {
         var app = waf.app;
         app.use(cookieParser());
         app.use(session({
@@ -22,15 +22,15 @@ restberry
             secret: 'restberry',
         }));
     }))
-    .use(restberryMongoose.use(function(odm) {
+    .use(restberryMongoose.config(function(odm) {
         odm.connect('mongodb://localhost/restberry-test');
     }))
-    .use(restberryAuth.use(function(auth) {
+    .use(restberryPassport.config(function(auth) {
             var app = restberry.waf.app;
             app.use(auth.passport.initialize());
             app.use(auth.passport.session());
         })
-        .use(restberryAuthGoogle.config({
+        .use(restberryPassportGoogle.config({
             clientID: 'id',
             clientSecret: 'secret',
         }))

@@ -1,15 +1,15 @@
 var config = require('./config/config');
 var restberry = require('restberry');
-var restberryAuth = require('restberry-auth');
-var restberryAuthLocal = require('restberry-auth-local');
+var restberryPassport = require('restberry-passport');
+var restberryPassportLocal = require('restberry-passport-local');
 var restberryExpress = require('restberry-express');
 var restberryMongoose = require('restberry-mongoose');
 var testlib = require('../testlib');
 var utils = require('restberry-utils');
 
-var auth = restberryAuth
+var auth = restberryPassport
     .config(config.auth)
-    .use(restberryAuthLocal, config.authLocal);
+    .use(restberryPassportLocal, config.authLocal);
 
 restberry
     .config(config.restberry)

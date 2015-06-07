@@ -1,7 +1,7 @@
 var cookieParser = require('cookie-parser');
 var restberry = require('restberry');
-var restberryAuth = require('restberry-auth');
-var restberryAuthLocal = require('restberry-auth-local');
+var restberryPassport = require('restberry-passport');
+var restberryPassportLocal = require('restberry-passport-local');
 var restberryMongoose = require('restberry-mongoose');
 var restberryRestify = require('restberry-restify');
 var session = require('client-sessions');
@@ -26,12 +26,12 @@ restberry
     .use('mongoose', function(odm) {
         odm.connect('mongodb://localhost/restberry-test');
     })
-    .use(restberryAuth.config(function(auth) {
+    .use(restberryPassport.config(function(auth) {
             var server = restberry.waf.server;
             server.use(auth.passport.initialize());
             server.use(auth.passport.session());
         })
-        .use(restberryAuthLocal.config({
+        .use(restberryPassportLocal.config({
             additionalFields: {
                 name: {
                     first: {type: String},

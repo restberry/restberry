@@ -2,12 +2,12 @@ var cookieParser = require('cookie-parser');
 var restberry = require('restberry');
 var restberryExpress = require('restberry-express');
 var restberryMongoose = require('restberry-mongoose');
-var restberryAuth = require('restberry-auth');
-var restberryAuthLocal = require('restberry-auth-local');
+var restberryPassport = require('restberry-passport');
+var restberryPassportLocal = require('restberry-passport-local');
 var session = require('express-session');
 var testlib = require('../testlib');
 
-var auth = restberryAuth
+var auth = restberryPassport
     .config(function(auth) {
         var app = restberry.waf.app;
         app.use(auth.passport.initialize());

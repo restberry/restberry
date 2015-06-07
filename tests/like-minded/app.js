@@ -1,17 +1,17 @@
 var config = require('./config/config');
 var restberry = require('restberry');
-var restberryAuth = require('restberry-auth');
-var restberryAuthGoogle = require('restberry-auth-google');
-var restberryAuthLocal = require('restberry-auth-local');
+var restberryPassport = require('restberry-passport');
+var restberryPassportGoogle = require('restberry-passport-google');
+var restberryPassportLocal = require('restberry-passport-local');
 var restberryExpress = require('restberry-express');
 var restberryMongoose = require('restberry-mongoose');
 
 restberry
     .config(config.restberry)
-    .use(restberryAuth
+    .use(restberryPassport
             .config(config.restberryAuth)
-            .use(restberryAuthGoogle.config(config.restberryAuthGoogle))
-            .use(restberryAuthLocal.config(config.restberryAuthLocal))
+            .use(restberryPassportGoogle.config(config.restberryAuthGoogle))
+            .use(restberryPassportLocal.config(config.restberryAuthLocal))
     )
     .use(restberryExpress.config(config.restberryExpress))
     .use(restberryMongoose.config(config.restberryMongoose))
