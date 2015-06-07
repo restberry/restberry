@@ -33,8 +33,8 @@ Let's start by defining our ``package.json`` file and our dependencies:
 ```
 
 We are going to use ``express 4.12`` as our web framework and ``mongoose 3.8``
-as our ODM. Notice that the restberry module version correspond to the different
-modules' version.
+as our ODM. Notice that the restberry module version correspond to the
+different modules' version.
 
 Now we can define our main ``app.js`` file, start by importing the dependencies:
 
