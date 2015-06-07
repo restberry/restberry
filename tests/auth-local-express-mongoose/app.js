@@ -7,6 +7,21 @@ var restberryAuthLocal = require('restberry-auth-local');
 var session = require('express-session');
 var testlib = require('../testlib');
 
+var auth = restberryAuth
+    .config(function(auth) {
+        var app = restberry.waf.app;
+        app.use(auth.passport.initialize());
+        app.use(auth.passport.session());
+    })
+    .use('local', {
+        additionalFields: {
+            name: {
+                first: {type: String},
+                last: {type: String},
+            },
+        },
+    });
+
 restberry
     .config({
         apiPath: '/api/v1',
@@ -23,22 +38,11 @@ restberry
         }));
     })
     .use(restberryMongoose, function(odm) {
+    console.log('!')
         odm.connect('mongodb://localhost/restberry-test');
     })
-    .use(restberryAuth.use(function(auth) {
-            var app = restberry.waf.app;
-            app.use(auth.passport.initialize());
-            app.use(auth.passport.session());
-        })
-        .use(restberryAuthLocal.config({
-            additionalFields: {
-                name: {
-                    first: {type: String},
-                    last: {type: String},
-                },
-            },
-        }))
-    ).listen('RESTBERRY');
+    .use(auth)
+    .listen('RESTBERRY');
 
 restberry.model('User')
     .loginRequired()

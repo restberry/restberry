@@ -27,7 +27,7 @@ module.exports = {
     restberry: {
         apiPath: '/api/v1',
         env: ENV,
-        name: 'SALES-BRANCH',
+        name: 'TREE-BRANCH',
         port: PORT,
         verbose: DEBUG,
     },

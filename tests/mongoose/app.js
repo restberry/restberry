@@ -5,9 +5,9 @@ restberry
     .config({
         verbose: true,
     })
-    .use(restberryMongoose.use(function(odm) {
+    .use('mongoose', function(odm) {
         odm.connect('mongodb://localhost/restberry-test');
-    }));
+    })
 
 restberry.model('Bar')
     .schema({

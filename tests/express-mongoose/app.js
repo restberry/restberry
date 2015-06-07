@@ -9,8 +9,8 @@ restberry
         port: process.env.NODE_PORT || 6000,
         verbose: true,
     })
-    .use(restberryExpress.use())
-    .use(restberryMongoose.use(function(odm) {
+    .use(restberryExpress)
+    .use(restberryMongoose.config(function(odm) {
         odm.connect('mongodb://localhost/restberry-test');
     }))
     .listen('RESTBERRY');

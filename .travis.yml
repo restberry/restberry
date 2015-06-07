@@ -5,4 +5,5 @@ node_js:
 before_script:
   - "npm install -g forever"
   - "npm install -g nodeunit"
+env: NODE_SLEEP=5
 script: npm test

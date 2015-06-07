@@ -7,14 +7,15 @@ var restberryMongoose = require('restberry-mongoose');
 var testlib = require('../testlib');
 var utils = require('restberry-utils');
 
+var auth = restberryAuth
+    .config(config.auth)
+    .use(restberryAuthLocal, config.authLocal);
+
 restberry
     .config(config.restberry)
-    .use(restberryAuth
-            .use(config.auth)
-            .use(restberryAuthLocal.config(config.authLocal))
-    )
-    .use(restberryExpress.use(config.express))
-    .use(restberryMongoose.use(config.mongoose))
+    .use(auth)
+    .use(restberryExpress, config.express)
+    .use(restberryMongoose, config.mongoose)
     .listen();
 
 require('./models/user')(restberry);

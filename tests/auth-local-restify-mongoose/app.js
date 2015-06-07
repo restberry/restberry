@@ -13,7 +13,7 @@ restberry
         port: process.env.NODE_PORT || 6000,
         verbose: true,
     })
-    .use(restberryRestify.use(function(waf) {
+    .use(restberryRestify, function(waf) {
         var server = waf.server;
         server.use(cookieParser());
         server.use(session({
@@ -22,11 +22,11 @@ restberry
             saveUninitialized: false,
             secret: 'restberry',
         }));
-    }))
-    .use(restberryMongoose.use(function(odm) {
+    })
+    .use('mongoose', function(odm) {
         odm.connect('mongodb://localhost/restberry-test');
-    }))
-    .use(restberryAuth.use(function(auth) {
+    })
+    .use(restberryAuth.config(function(auth) {
             var server = restberry.waf.server;
             server.use(auth.passport.initialize());
             server.use(auth.passport.session());

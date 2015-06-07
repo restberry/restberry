@@ -1,6 +1,5 @@
 var restberry = require('restberry');
-var restberryMongoose = require('restberry-mongoose');
-var restberryRestify = require('restberry-restify');
+var RestberryRestify = require('restberry-restify');
 var testlib = require('../testlib');
 
 restberry
@@ -9,7 +8,7 @@ restberry
         port: process.env.NODE_PORT || 6000,
         verbose: true,
     })
-    .use(restberryRestify.use())
+    .use(RestberryRestify)
     .listen('RESTBERRY');
 
 restberry.model('Bar')

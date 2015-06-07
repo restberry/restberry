@@ -9,12 +9,12 @@ var restberryMongoose = require('restberry-mongoose');
 restberry
     .config(config.restberry)
     .use(restberryAuth
-            .use(config.restberryAuth)
+            .config(config.restberryAuth)
             .use(restberryAuthGoogle.config(config.restberryAuthGoogle))
             .use(restberryAuthLocal.config(config.restberryAuthLocal))
     )
-    .use(restberryExpress.use(config.restberryExpress))
-    .use(restberryMongoose.use(config.restberryMongoose))
+    .use(restberryExpress.config(config.restberryExpress))
+    .use(restberryMongoose.config(config.restberryMongoose))
     .listen();
 
 require('./models/connection')(restberry);

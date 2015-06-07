@@ -3,7 +3,11 @@
 root_dir=`pwd`
 
 export NODE_PORT=5115
-export NODE_SLEEP=5
+
+if [ -c $NODE_SLEEP ]
+then
+    export NODE_SLEEP=1
+fi
 
 if [ -c $RESTBERRY_TEST ]
 then
