@@ -3,7 +3,7 @@
         "client-sessions": "0.7.x",
         "cookie-parser": "1.3.x",
         "http-status": "0.1.x",
-        "restberry": "0.3.x",
+        "restberry": "1.0.x",
         "restberry-auth": "0.2.x",
         "restberry-auth-local": "0.2.x",
         "restberry-mongoose": "3.8.x",
