@@ -99,7 +99,7 @@ additional code.
 
 ## Authentication
 
-See [`restberry-auth`](https://github.com/materik/restberry-auth).
+See [`restberry-passport`](https://github.com/materik/restberry-passport).
 
 ## Routing
 
