@@ -11,8 +11,8 @@ fi
 
 if [ -c $RESTBERRY_TEST ]
 then
-    test_module_dirs[0]="auth-local-express-mongoose"
-    test_module_dirs[1]="auth-local-restify-mongoose"
+    test_module_dirs[0]="passport-local-express-mongoose"
+    test_module_dirs[1]="passport-local-restify-mongoose"
     test_module_dirs[2]="default"
     test_module_dirs[3]="express-mongoose"
     test_module_dirs[4]="mongoose"
