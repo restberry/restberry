@@ -7,6 +7,6 @@
     "scripts": {
         "start": "echo start",
         "stop": "echo stop",
-        "test": "nodeunit tests"
+        "test": "nodeunit test"
     }
 }

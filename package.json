@@ -49,7 +49,7 @@
         "url": "https://github.com/materik/restberry.git"
     },
     "scripts": {
-        "test": "cd tests && npm start",
+        "test": "cd test && npm start",
         "validate": "jscs **/*.js && jshint **/*.js"
     },
     "version": "1.0.1"

@@ -13,8 +13,6 @@ do
     PRINT_TITLE $dir
 
     test_module_dir=$root_dir/$dir
-    tests_dir=$test_module_dir/tests
-
     if [ ! -d $test_module_dir ]
     then
         echo "couldn't find $test_module_dir"
