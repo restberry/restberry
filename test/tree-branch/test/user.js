@@ -53,7 +53,7 @@ exports.testReadManyExcludeSelfThree = function(test) {
 exports.testInviteUser = function(test) {
     testlib.createUser(EMAIL, PASSWORD, function(userId) {
         var path = 'users?action=invite-user';
-        var d = {email: 'materik@me.com'};
+        var d = {email: 'thematerik@gmail.com'};
         testlib.client.post(path, d, function(err, res, json) {
             test.equal(res.statusCode, httpStatus.OK);
             test.equal(json.user.email, d.email);
@@ -67,7 +67,7 @@ exports.testInviteUserToOrg = function(test) {
         testlib.createOrg({name: 'My Org'}, function(orgId) {
             var path = 'users?action=invite-user';
             var d = {
-                email: 'materik@me.com',
+                email: 'thematerik@gmail.com',
                 organizationId: orgId,
             };
             testlib.client.post(path, d, function(err, res, json) {
@@ -97,7 +97,7 @@ exports.testInviteUserCheckUser = function(test) {
         testlib.createOrg({name: 'My Org'}, function(orgId) {
             var path = 'users?action=invite-user';
             var d = {
-                email: 'materik@me.com',
+                email: 'thematerik@gmail.com',
                 organizationId: orgId,
             };
             testlib.client.post(path, d, function(err, res, json) {
