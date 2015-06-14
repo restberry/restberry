@@ -26,19 +26,19 @@ restberry
     .use('mongoose', function(odm) {
         odm.connect('mongodb://localhost/restberry-test');
     })
-    .use(restberryPassport.config(function(auth) {
-            var server = restberry.waf.server;
-            server.use(auth.passport.initialize());
-            server.use(auth.passport.session());
-        })
-        .use(restberryPassportLocal.config({
+    .use(restberryPassport.config({
             additionalFields: {
                 name: {
                     first: {type: String},
                     last: {type: String},
                 },
             },
-        }))
+        }, function(auth) {
+            var server = restberry.waf.server;
+            server.use(auth.passport.initialize());
+            server.use(auth.passport.session());
+        })
+        .use(restberryPassportLocal.config())
     ).listen('RESTBERRY');
 
 restberry.model('User')

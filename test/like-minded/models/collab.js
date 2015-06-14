@@ -23,8 +23,6 @@ var USER_FIELDS = [
 
 module.exports = function(restberry) {
 
-    console.log(restberry.odm.ObjectId)
-
     restberry.model(MODEL_NAME)
         .schema({
             user: {
@@ -48,8 +46,6 @@ module.exports = function(restberry) {
             getConnections: function(next) {
                 var Connection = restberry.model('Connection');
                 var query = {collab: this.getId()};
-                //req.fields = _.union(CONNECTION_FIELDS, USER_FIELDS);
-                //req.limit = null;
                 Connection.find(query, function(conns) {
                     conns.toJSON(next);
                 });

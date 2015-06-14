@@ -8,19 +8,19 @@ var session = require('express-session');
 var testlib = require('../testlib');
 
 var auth = restberryPassport
-    .config(function(auth) {
-        var app = restberry.waf.app;
-        app.use(auth.passport.initialize());
-        app.use(auth.passport.session());
-    })
-    .use('local', {
+    .config({
         additionalFields: {
             name: {
                 first: {type: String},
                 last: {type: String},
             },
         },
-    });
+    }, function(auth) {
+        var app = restberry.waf.app;
+        app.use(auth.passport.initialize());
+        app.use(auth.passport.session());
+    })
+    .use('local');
 
 restberry
     .config({
@@ -38,7 +38,6 @@ restberry
         }));
     })
     .use(restberryMongoose, function(odm) {
-    console.log('!')
         odm.connect('mongodb://localhost/restberry-test');
     })
     .use(auth)
@@ -64,7 +63,7 @@ restberry.model('User')
                     req.user.toJSON(next);
                 },
             },
-        })
+        });
 
 restberry.model('Foo')
     .schema({
@@ -79,7 +78,7 @@ restberry.model('Foo')
         .addReadRoute()
         .addReadManyRoute({
             parentModel: restberry.model('User'),
-        })
+        });
 
 restberry.model('Baz')
     .schema({
