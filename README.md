@@ -7,7 +7,7 @@
 
 [![NPM](https://nodei.co/npm/restberry.png?downloads=true)](https://nodei.co/npm/restberry/)
 
-Framework for setting up RESTful APIs. Define your models and setup CRUD API
+Framework for setting up RESTful JSON APIs with NodeJS. Define your models and setup CRUD API
 calls without needing to write any code (see [Usage](#usage)). All API calls will handle
 and identify issues and throw necessary HTTP responses and easy to debug error
 responses. Restberry also handles authentication and permission checks and
@@ -171,7 +171,7 @@ npm test
 
 ## Further reading
 
-I have written an article series on RESTful API design which this package is base upon, you can find the three parts here: [part 1](http://materik.tumblr.com/post/98324672516/restful-json-api-design-part-1), [part 2](http://materik.tumblr.com/post/99806761591/restful-json-api-design-part-2) and
+I have written an article series on RESTful JSON API design which this package is base upon, you can find the three parts here: [part 1](http://materik.tumblr.com/post/98324672516/restful-json-api-design-part-1), [part 2](http://materik.tumblr.com/post/99806761591/restful-json-api-design-part-2) and
 [part 3](http://materik.tumblr.com/post/101938795476/restful-json-api-design-part-3).
 
 ## Contact
