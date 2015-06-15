@@ -163,8 +163,6 @@ restberry
 **NOTE:** you can set these properties to all the predefined API definitions,
 you won't be able to override `action` however.
 
-See [`restberry-router-crud`](https://github.com/materik/restberry-router-crud) for more info.
-
 ## Run the tests
 
 ```
