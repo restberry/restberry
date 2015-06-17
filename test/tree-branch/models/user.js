@@ -85,7 +85,7 @@ module.exports = function(restberry) {
                     next();
                 };
                 var returnUser = function(next) {
-                    user.options().addExpand('user');
+                    user.expandJSON();
                     user.toJSON(next);
                 };
                 getOrg(function() {
@@ -98,7 +98,7 @@ module.exports = function(restberry) {
             },
 
             me: function(req, res, next) {
-                req.user.options().addExpand('user');
+                req.user.expandJSON();
                 req.user.toJSON(next);
             },
         })

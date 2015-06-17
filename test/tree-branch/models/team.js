@@ -76,7 +76,7 @@ module.exports = function(restberry) {
                         });
                     }, function() {
                         team.save(function(team) {
-                            team.options().addExpand(team.model.singularName());
+                            team.expandJSON();
                             team.toJSON(next);
                         });
                     });

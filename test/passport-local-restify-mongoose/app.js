@@ -57,7 +57,7 @@ restberry.model('User')
             actions: {
                 me: function(req, res, next) {
                     var User = restberry.auth.getUser();
-                    req.user.options().addExpand(User.singularName());
+                    req.user.expandJSON();
                     req.user.toJSON(function(json) {
                         res._body = json;
                         next(json);

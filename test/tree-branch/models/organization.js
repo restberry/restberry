@@ -53,7 +53,7 @@ module.exports = function(restberry) {
                         });
                     }, function() {
                         org.save(function(org) {
-                            org.options().addExpand('organization');
+                            org.expandJSON();
                             org.toJSON(next);
                         });
                     });
