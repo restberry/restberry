@@ -65,7 +65,7 @@ module.exports = function(restberry) {
                     Script.create(d, function(branchesTo) {
                         branchesFrom.addBranchesTo(branchesTo);
                         branchesFrom.save(function() {
-                            branchesTo.options().addExpand('script');
+                            branchesTo.expandJSON();
                             branchesTo.toJSON(function(json) {
                                 res.status(CREATED);
                                 next(json);

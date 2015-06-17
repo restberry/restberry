@@ -20,7 +20,7 @@ module.exports = function(restberry) {
             .addReadManyRoute({
                 actions: {
                     me: function(req, res, next) {
-                        req.user.options().addExpand(req.user.model.singularName());
+                        req.user.expandJSON();
                         req.user.toJSON(function(json) {
                             req.user.getNbrOfCollabs(function(nbr) {
                                 json.user.nbrOfCollabs = nbr;
