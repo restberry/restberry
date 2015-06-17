@@ -1,11 +1,11 @@
 [Restberry](http://restberry.com)
 =================================
 
-> ## Restberry works with both Express and Restify!
-
 [![](https://img.shields.io/npm/v/restberry.svg)](https://www.npmjs.com/package/restberry) [![](https://img.shields.io/npm/dm/restberry.svg)](https://www.npmjs.com/package/restberry) [![](https://travis-ci.org/materik/restberry.svg)](https://travis-ci.org/materik/restberry)
 
 [![NPM](https://nodei.co/npm/restberry.png?downloads=true)](https://nodei.co/npm/restberry/)
+
+> Restberry works with both Express and Restify!
 
 Framework for setting up RESTful JSON APIs with NodeJS. Define your models and setup CRUD API
 calls without needing to write any code (see [Usage](#usage)). All API calls will handle
@@ -39,24 +39,27 @@ restberry.model('Foo')
     .schema({
         name: {type: String},
     })
-    .routes.addCRUDRoutes();
+    .routes
+        .addCreateRoute()
+        .addReadManyRoute();
 
 restberry.model('Bar')
     .schema({
         foo: {type: restberry.odm.ObjectId, ref: 'Foo'},
         name: {type: String},
     })
-    .routes.addCRUDRoutes({
-        parentModel: 'Foo',
-    });
-
+    .routes
+        .addCRUDRoutes({
+            parentModel: 'Foo',
+        });
 ```
 
 **NOTE:** By default, Restberry integrates with ExpressJS and Mongoose but it
 can be hooked up with other packages. See more usages in the tests and dependent
 packages like:
-[`restberry-express`](https://github.com/materik/restberry-express) and
-[`restberry-mongoose`](https://github.com/materik/restberry-mongoose).
+- [`restberry-express`](https://github.com/materik/restberry-express)
+- [`restberry-mongoose`](https://github.com/materik/restberry-mongoose)
+- [`restberry-restify`](https://github.com/materik/restberry-restify)
 
 ## Response examples
 
