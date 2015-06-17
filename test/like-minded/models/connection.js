@@ -33,10 +33,10 @@ module.exports = function(restberry) {
             approve: function(req, res, next) {
                 var id = req.params.id;
                 this.findById(id, function(con) {
-                    con.set('timestampApproved', new Date());
-                    con.set('approved', true);
+                    con.timestampApproved = new Date();
+                    con.approved = true;
                     con.save(function() {
-                        req.expand.push('connection');
+                        con.expandJSON();
                         con.toJSON(next);
                     })
                 });
@@ -46,17 +46,16 @@ module.exports = function(restberry) {
         .preSave(function(next) {
             var self = this;
             var Collab = restberry.model('Collab');
-            Collab.findById(self.get('collab'), function(collab) {
-                var userId = self.get('user').toString();
-                if (userId ===
-                    collab.get('user').toString()) {
+            Collab.findById(self.collab, function(collab) {
+                var userId = self.user.toString();
+                if (userId === collab.user.toString()) {
                     next(new Error(ERROR_CONNECT_TO_SELF));
                     return;
                 }
-                var query = {collab: collab.getId()};
+                var query = {collab: collab.id};
                 self.model.find(query, function(collabs) {
                     var users = _.map(collabs, function(collab) {
-                        return collab.get('user').toString();
+                        return collab.user.toString();
                     });
                     if (_.contains(users, userId)) {
                         next(new Error(ERROR_ALREADY_CONNECTED));

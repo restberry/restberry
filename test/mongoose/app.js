@@ -16,7 +16,7 @@ restberry.model('Bar')
     })
     .methods({
         setName: function(name, next) {
-            this.set('name', name);
+            this.name = name;
             this.save(next);
         },
     });

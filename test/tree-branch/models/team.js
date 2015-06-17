@@ -28,7 +28,7 @@ module.exports = function(restberry) {
 
         .methods({
             isUserAMember: function(userId) {
-                var members = _.map(this.get('members'), function(id) {
+                var members = _.map(this.members, function(id) {
                     return id.toString();
                 });
                 return _.contains(members, userId.toString());
@@ -49,7 +49,7 @@ module.exports = function(restberry) {
                 var getTeamAndOrg = function(next) {
                     var teamId = req.params.id;
                     Team.findById(teamId, function(team) {
-                        var orgId = team.get('organization');
+                        var orgId = team.organization;
                         Org.findById(orgId, function(org) {
                             next(team, org);
                         });
@@ -71,7 +71,7 @@ module.exports = function(restberry) {
                             return;
                         }
                         User.findById(userId, function(user) {
-                            team.get('members').push(userId);
+                            team.members.push(userId);
                             iter();
                         });
                     }, function() {
@@ -85,7 +85,7 @@ module.exports = function(restberry) {
         })
         .preRemove(function(next) {
             var Script = restberry.model('Script');
-            var query = {team: this.getId()};
+            var query = {team: this.id};
             Script.find(query, function(scripts) {
                 utils.forEachAndDone(scripts, function(script, iter) {
                     script.remove(iter);
@@ -96,7 +96,7 @@ module.exports = function(restberry) {
         .loginRequired()
         .isAuthorized(function(next) {
             var user = restberry.waf.getUser();
-            next(this.isUserAMember(user.getId()));
+            next(this.isUserAMember(user.id));
         })
 
         .routes
@@ -107,7 +107,7 @@ module.exports = function(restberry) {
                 preAction: function(req, res, next) {
                     req._query = {
                         organization: req.params.id,
-                        members: req.user.getId()
+                        members: req.user.id
                     };
                     next();
                 },
@@ -115,7 +115,7 @@ module.exports = function(restberry) {
             .addCreateRoute({
                 parentModel: restberry.model('Organization'),
                 preAction: function(req, res, next) {
-                    var userId = req.user.getId();
+                    var userId = req.user.id;
                     req.body.createdBy = userId;
                     req.body.members = [userId];
                     next();

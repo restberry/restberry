@@ -41,9 +41,9 @@ module.exports = function(restberry) {
         .populate(function(next) {
             var self = this;
             var Script = restberry.model('Script');
-            Script.findById(self.get('script'), function(script) {
+            Script.findById(self.script, function(script) {
                 var activity;
-                switch (self.get('type')) {
+                switch (self.type) {
                     case ACTIVITY_TYPE_CREATED:
                         activity = ACTIVITY_FORMAT_CREATED;
                         break;
@@ -54,7 +54,7 @@ module.exports = function(restberry) {
                         activity = ACTIVITY_FORMAT_BRANCHED;
                         break;
                 }
-                next({activity: util.format(activity, script.get('name'))});
+                next({activity: util.format(activity, script.name)});
             });
         })
         .statics({
@@ -67,7 +67,7 @@ module.exports = function(restberry) {
                     var activity;
                     if (activities.length) {
                         activity = _.first(activities);
-                        activity.set('timestampUpdated', new Date());
+                        activity.timestampUpdated = new Date();
                         activity.save(next);
                     } else {
                         Activity.create(d, next);
@@ -79,7 +79,7 @@ module.exports = function(restberry) {
         .loginRequired()
         .isAuthorized(function(next) {
             var Team = restberry.model('Team');
-            Team.findById(this.get('team'), function(team) {
+            Team.findById(this.team, function(team) {
                 team.isAuthorized(next);
             });
         })

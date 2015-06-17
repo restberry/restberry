@@ -41,10 +41,17 @@ restberry.model('Baz')
     .schema({
         nested: {
             obj: {type: restberry.odm.ObjectId, ref: 'Baz'},
+            x: {
+                a: {type: String},
+                b: {type: String},
+            },
         },
     })
     .routes
         .addCreateRoute()
+        .addCreateRoute({
+            parentModel: 'Baz',
+        })
         .addPartialUpdateRoute()
         .addReadRoute()
 

@@ -38,20 +38,20 @@ module.exports = function(restberry) {
 
         .methods({
             addBranchesTo: function(branchesTo) {
-                var bt = this.get('versioning').branchesTo;
-                bt.push(branchesTo.getId().toString());
+                var bt = this.versioning.branchesTo;
+                bt.push(branchesTo.id.toString());
             },
 
             getBranch: function(user) {
                 var self = this;
                 return {
-                    createdBy: user.getId(),
-                    team: self.get('team').toString(),
-                    name: self.get('name') + BRANCH_NAME_SUFFIX,
-                    text: self.get('text'),
+                    createdBy: user.id,
+                    team: self.team.toString(),
+                    name: self.name + BRANCH_NAME_SUFFIX,
+                    text: self.text,
                     versioning: {
-                        version: self.get('versioning').version + 1,
-                        branchesFrom: self.getId().toString(),
+                        version: self.versioning.version + 1,
+                        branchesFrom: self.id.toString(),
                     },
                 };
             },
@@ -80,7 +80,7 @@ module.exports = function(restberry) {
                 var Script = restberry.model('Script');
                 var query = {
                     team: req.params.id,
-                    createdBy: req.user.getId(),
+                    createdBy: req.user.id,
                 };
                 Script.find(query, function(scripts) {
                     scripts.toJSON(function(json) {
@@ -94,7 +94,7 @@ module.exports = function(restberry) {
 
         .preRemove(function(next) {
             var Activity = restberry.model('Activity');
-            var query = {script: this.getId()};
+            var query = {script: this.id};
             Activity.find(query, function(activities) {
                 utils.forEachAndDone(activities, function(activity, iter) {
                     activity.remove(iter);
@@ -104,16 +104,16 @@ module.exports = function(restberry) {
         .preSave(function(next) {
             var self = this;
             var d = {
-                team: self.get('team').toString(),
-                user: self.get('createdBy').toString(),
-                script: self.getId(),
+                team: self.team.toString(),
+                user: self.createdBy.toString(),
+                script: self.id,
             };
             var Activity = restberry.model('Activity');
             Activity.find(d, function(activities) {
                 var types = _.pluck(activities, 'type');
                 var branchType = Activity.ACTIVITY_TYPE_BRANCHED;
                 var hasBranched = _.contains(types, branchType);
-                if (self.get('versioning').branchesFrom && !hasBranched) {
+                if (self.versioning.branchesFrom && !hasBranched) {
                     d.type = Activity.ACTIVITY_TYPE_BRANCHED;
                 } else if (!activities.length) {
                     d.type = Activity.ACTIVITY_TYPE_CREATED;
@@ -129,7 +129,7 @@ module.exports = function(restberry) {
         .loginRequired()
         .isAuthorized(function(next) {
             var Team = restberry.model('Team');
-            Team.findById(this.get('team'), function(team) {
+            Team.findById(this.team, function(team) {
                 team.isAuthorized(next);
             });
         })
@@ -138,7 +138,7 @@ module.exports = function(restberry) {
             .addReadRoute()
             .addReadManyRoute({
                 preAction: function(req, res, next) {
-                    req._query = {createdBy: req.user.getId()};
+                    req._query = {createdBy: req.user.id};
                     next();
                 },
             })
@@ -163,7 +163,7 @@ module.exports = function(restberry) {
                             };
                             restberry.onError(errors.BadRequest, err);
                         } else {
-                            req.body.createdBy = req.user.getId();
+                            req.body.createdBy = req.user.id;
                             req.body.versioning = {
                                 version: 1,
                             };

@@ -45,7 +45,7 @@ module.exports = function(restberry) {
         .methods({
             getConnections: function(next) {
                 var Connection = restberry.model('Connection');
-                var query = {collab: this.getId()};
+                var query = {collab: this.id};
                 Connection.find(query, function(conns) {
                     conns.toJSON(next);
                 });
@@ -57,8 +57,8 @@ module.exports = function(restberry) {
                 var self = restberry.model(MODEL_NAME);
                 self.findById(req.params.id, function(collab) {
                     var d = {
-                        user: req.user.getId(),
-                        collab: collab.getId(),
+                        user: req.user.id,
+                        collab: collab.id,
                     };
                     Connection.create(d, function() {
                         collab.toJSON(next);
@@ -160,7 +160,7 @@ module.exports = function(restberry) {
             })
             .addCreateRoute({
                 preAction: function(req, res, next) {
-                    req.body.user = req.user.getId();
+                    req.body.user = req.user.id;
                     next();
                 },
                 postAction: restberry.model(MODEL_NAME).expandCollab,

@@ -23,7 +23,7 @@ module.exports = function(restberry) {
 
         .methods({
             isUserAMember: function(userId) {
-                var members = _.map(this.get('members'), function(id) {
+                var members = _.map(this.members, function(id) {
                     return id.toString();
                 });
                 return _.contains(members, userId.toString());
@@ -48,7 +48,7 @@ module.exports = function(restberry) {
                             return;
                         }
                         User.findById(userId, function(user) {
-                            org.get('members').push(userId);
+                            org.members.push(userId);
                             iter();
                         });
                     }, function() {
@@ -63,7 +63,7 @@ module.exports = function(restberry) {
 
         .preRemove(function(next) {
             var Team = restberry.model('Team');
-            var query = {organization: this.getId()}
+            var query = {organization: this.id}
             Team.find(query, function(teams) {
                 utils.forEachAndDone(teams, function(team, iter) {
                     team.remove(iter);
@@ -74,7 +74,7 @@ module.exports = function(restberry) {
         .loginRequired()
         .isAuthorized(function(next) {
             var user = restberry.waf.getUser();
-            next(this.isUserAMember(user.getId()));
+            next(this.isUserAMember(user.id));
         })
 
         .routes
@@ -82,13 +82,13 @@ module.exports = function(restberry) {
             .addReadRoute()
             .addReadManyRoute({
                 preAction: function(req, res, next) {
-                    req._query = {members: req.user.getId()};
+                    req._query = {members: req.user.id};
                     next();
                 },
             })
             .addCreateRoute({
                 preAction: function(req, res, next) {
-                    var userId = req.user.getId();
+                    var userId = req.user.id;
                     req.body.createdBy = userId;
                     req.body.members = [userId];
                     next();

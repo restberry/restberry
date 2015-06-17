@@ -1,7 +1,7 @@
 {
    "dependencies": {
         "http-status": "0.1.x",
-        "restberry": "1.0.x"
+        "restberry": "1.1.x"
     },
     "scripts": {
         "logs": "forever logs app.js",

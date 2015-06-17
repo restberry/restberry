@@ -44,8 +44,9 @@ restberry
 restberry.model('User')
     .loginRequired()
     .preSave(function(next) {
-        var name = this.get('name');
-        if (name.first === undefined)  this.set('name', {first: 'tom'});
+        if (!this.name || this.name.first === undefined) {
+            this.name = {first: 'tom'};
+        }
         next();
     })
     .routes
@@ -94,9 +95,8 @@ restberry.model('Baz')
     })
     .loginRequired()
     .isAuthorizedToCreate(function(next) {
-        var nested = this.get('nested');
         var user = this.restberry.waf.getUser();
-        next(nested && nested.user == user.getId());
+        next(this.nested && this.nested.user == user.id);
     })
     .routes
         .addCreateRoute({

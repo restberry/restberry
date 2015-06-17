@@ -15,20 +15,20 @@ module.exports = function(restberry) {
             getName: function() {
                 var name;
                 if (this.name) {
-                    var firstName = this.get('name').first;
+                    var firstName = this.name.first;
                     if (!firstName)  firstName = '';
-                    var lastName = this.get('name').last;
+                    var lastName = this.name.last;
                     if (!lastName)  lastName = '';
                     name = _s.trim(firstName + ' ' + lastName);
                 }
-                if (!name)  name = _.first(this.get('email').split('@'));
+                if (!name)  name = _.first(this.email.split('@'));
                 return name;
             },
         })
         .statics({
             excludeSelf: function(req, res, next) {
                 var User = restberry.model('User');
-                var query = {_id: {$ne: req.user.getId()}};
+                var query = {_id: {$ne: req.user.id}};
                 User.find(query, function(users) {
                     users.toJSON(next);
                 });
@@ -72,7 +72,7 @@ module.exports = function(restberry) {
                     User.create(d, function(_user) {
                         user = _user;
                         if (org) {
-                            org.get('members').push(user.getId());
+                            org.members.push(user.id);
                             org.save(next);
                         } else {
                             next();

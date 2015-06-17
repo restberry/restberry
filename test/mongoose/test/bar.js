@@ -8,7 +8,7 @@ exports.tearDown = testlib.setupTeardown;
 exports.testCreate = function(test) {
     var Bar = restberry.model('Bar');
     Bar.create({name: 'test'}, function(bar) {
-        test.equal(bar.get('name'), 'test');
+        test.equal(bar.name, 'test');
         test.done();
     });
 };
@@ -16,9 +16,9 @@ exports.testCreate = function(test) {
 exports.testUpdate = function(test) {
     var Bar = restberry.model('Bar');
     Bar.create({name: 'test'}, function(bar) {
-        bar.set('name', 'testname');
+        bar.name = 'testname';
         bar.save(function(bar) {
-            test.equal(bar.get('name'), 'testname');
+            test.equal(bar.name, 'testname');
             test.done();
         });
     });
@@ -28,7 +28,7 @@ exports.testUpdateName = function(test) {
     var Bar = restberry.model('Bar');
     Bar.create({name: 'test'}, function(bar) {
         bar.setName('testname', function(bar) {
-            test.equal(bar.get('name'), 'testname');
+            test.equal(bar.name, 'testname');
             test.done();
         });
     });
@@ -37,9 +37,9 @@ exports.testUpdateName = function(test) {
 exports.testGet = function(test) {
     var Bar = restberry.model('Bar');
     Bar.create({name: 'test'}, function(bar) {
-        var barId = bar.getId();
+        var barId = bar.id;
         Bar.findById(barId, function(bar) {
-            test.equal(bar.get('name'), 'test');
+            test.equal(bar.name, 'test');
             test.done();
         });
     });

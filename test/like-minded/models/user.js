@@ -3,7 +3,7 @@ module.exports = function(restberry) {
         .methods({
             getNbrOfCollabs: function(next) {
                 var Collab = restberry.model('Collab');
-                var query = {user: this.getId()};
+                var query = {user: this.id};
                 Collab.find(query, function(collabs) {
                     next(collabs.length);
                 });

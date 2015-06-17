@@ -130,3 +130,63 @@ exports.testNestedSelf = function(test) {
         });
     });
 };
+
+exports.testPartialUpdateExtend = function(test) {
+    testlib.client.post('bazs', {}, function(err, res, json) {
+        var id = json.baz.id;
+        test.equal(res.statusCode, httpStatus.CREATED);
+        testlib.client.post('bazs/' + id + '/bazs?expand=baz', {
+            nested: {
+                x: {a: '1'},
+            },
+        }, function(err, res, json) {
+            var pid = json.baz.id;
+            test.equal(res.statusCode, httpStatus.CREATED);
+            test.equal(json.baz.nested.obj.id, id);
+            test.equal(json.baz.nested.x.a, '1');
+            test.ok(!json.baz.nested.x.b);
+            testlib.client.post('bazs/' + pid + '?expand=baz', {
+                nested: {
+                    x: {b: '2'},
+                },
+            }, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.OK);
+                test.equal(json.baz.id, pid);
+                test.equal(json.baz.nested.obj.id, id);
+                test.equal(json.baz.nested.x.a, '1');
+                test.equal(json.baz.nested.x.b, '2');
+                test.done();
+            });
+        });
+    });
+};
+
+exports.testPartialUpdateOverwrite = function(test) {
+    testlib.client.post('bazs', {}, function(err, res, json) {
+        var id = json.baz.id;
+        test.equal(res.statusCode, httpStatus.CREATED);
+        testlib.client.post('bazs/' + id + '/bazs?expand=baz', {
+            nested: {
+                x: {a: '1', b: null},
+            },
+        }, function(err, res, json) {
+            var pid = json.baz.id;
+            test.equal(res.statusCode, httpStatus.CREATED);
+            test.equal(json.baz.nested.obj.id, id);
+            test.equal(json.baz.nested.x.a, '1');
+            test.ok(!json.baz.nested.x.b);
+            testlib.client.post('bazs/' + pid + '?expand=baz', {
+                nested: {
+                    x: {b: '2', a: null},
+                },
+            }, function(err, res, json) {
+                test.equal(res.statusCode, httpStatus.OK);
+                test.equal(json.baz.id, pid);
+                test.equal(json.baz.nested.obj.id, id);
+                test.ok(!json.baz.nested.x.a);
+                test.equal(json.baz.nested.x.b, '2');
+                test.done();
+            });
+        });
+    });
+};
