@@ -110,6 +110,12 @@ See [`restberry-passport`](https://github.com/materik/restberry-passport).
 restberry.model('Foo')
     .routes
         .addCreateRoute()  // POST /foos
+        .addDeleteRoute()  // DELETE /foos/:id
+        .addPartialUpdateRoute()  // POST /foos/:id
+        .addReadManyRoute()  // GET /foos
+        .addReadRoute()  // GET /foos/:id
+        .addUpdateRoute()  // PUT /foos/:id
+        .addCRUDRoutes()  // All of the above...
 ```
 
 Handle action query strings like this:
