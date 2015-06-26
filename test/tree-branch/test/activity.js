@@ -130,3 +130,28 @@ exports.testReadManyUpdated = function(test) {
         });
     });
 };
+
+exports.testDeleteScript = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        var d = {name: 'test'};
+        testlib.createTeam(d, function(teamId) {
+            var d = {name: 'test'};
+            testlib.createScriptOfTeam(teamId, d, function(scriptId) {
+                var activityPath = 'teams/' + teamId + '/activities';
+                testlib.client.get(activityPath, function(err, res, json) {
+                    test.equal(res.statusCode, httpStatus.OK);
+                    test.equal(json.activities.length, 1);
+                    var scriptPath = 'scripts/' + scriptId;
+                    testlib.client.del(scriptPath, function(err, res, json) {
+                        test.equal(res.statusCode, httpStatus.NO_CONTENT);
+                        testlib.client.get(activityPath, function(err, res, json) {
+                            test.equal(res.statusCode, httpStatus.OK);
+                            test.equal(json.activities.length, 0);
+                            test.done();
+                        });
+                    });
+                });
+            });
+        });
+    });
+};

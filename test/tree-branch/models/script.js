@@ -135,6 +135,7 @@ module.exports = function(restberry) {
         })
 
         .routes
+            .addDeleteRoute()
             .addReadRoute()
             .addReadManyRoute({
                 preAction: function(req, res, next) {

@@ -83,6 +83,7 @@ module.exports = function(restberry) {
                 });
             },
         })
+
         .preRemove(function(next) {
             var Script = restberry.model('Script');
             var query = {team: this.id};

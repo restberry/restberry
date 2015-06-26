@@ -315,3 +315,26 @@ exports.testDelete = function(test) {
         });
     });
 };
+
+exports.testDeleteOrganisation = function(test) {
+    testlib.createUser(EMAIL, PASSWORD, function(userId) {
+        var d = {name: 'My Org'};
+        testlib.createOrg(d, function(orgId) {
+            var d = {name: 'My Team'};
+            testlib.createTeamOfOrg(orgId, d, function(teamId) {
+                var teamPath = 'teams/' + teamId;
+                var orgPath = 'organizations/' + orgId;
+                testlib.client.get(teamPath, function(err, res, json) {
+                    test.equal(res.statusCode, httpStatus.OK);
+                    testlib.client.del(orgPath, function(err, res, json) {
+                        test.equal(res.statusCode, httpStatus.NO_CONTENT);
+                        testlib.client.get(teamPath, function(err, res, json) {
+                            test.equal(res.statusCode, httpStatus.NOT_FOUND);
+                            test.done();
+                        });
+                    });
+                });
+            });
+        });
+    });
+};
