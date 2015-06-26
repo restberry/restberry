@@ -1,7 +1,9 @@
 [Restberry](http://restberry.com)
 =================================
 
-[![](https://img.shields.io/npm/v/restberry.svg)](https://www.npmjs.com/package/restberry) [![](https://img.shields.io/npm/dm/restberry.svg)](https://www.npmjs.com/package/restberry) [![](https://travis-ci.org/materik/restberry.svg)](https://travis-ci.org/materik/restberry)
+[![](https://img.shields.io/npm/v/restberry.svg?style=flat-square)](https://www.npmjs.com/package/restberry)
+[![](https://img.shields.io/npm/dm/restberry.svg?style=flat-square)](https://www.npmjs.com/package/restberry)
+[![](https://img.shields.io/travis/materik/restberry.svg?style=flat-square)](https://travis-ci.org/materik/restberry)
 
 [![NPM](https://nodei.co/npm/restberry.png?downloads=true)](https://nodei.co/npm/restberry/)
 
@@ -110,6 +112,12 @@ See [`restberry-passport`](https://github.com/materik/restberry-passport).
 restberry.model('Foo')
     .routes
         .addCreateRoute()  // POST /foos
+        .addDeleteRoute()  // DELETE /foos/:id
+        .addPartialUpdateRoute()  // POST /foos/:id
+        .addReadManyRoute()  // GET /foos
+        .addReadRoute()  // GET /foos/:id
+        .addUpdateRoute()  // PUT /foos/:id
+        .addCRUDRoutes()  // All of the above...
 ```
 
 Handle action query strings like this:
