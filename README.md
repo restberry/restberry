@@ -3,7 +3,7 @@
 
 [![](https://img.shields.io/npm/v/restberry.svg?style=flat-square)](https://www.npmjs.com/package/restberry)
 [![](https://img.shields.io/npm/dm/restberry.svg?style=flat-square)](https://www.npmjs.com/package/restberry)
-[![](https://travis-ci.org/materik/restberry.svg?style=flat-square)](https://travis-ci.org/materik/restberry)
+[![](https://img.shields.io/travis/materik/restberry.svg?style=flat-square)](https://travis-ci.org/materik/restberry)
 
 [![NPM](https://nodei.co/npm/restberry.png?downloads=true)](https://nodei.co/npm/restberry/)
 
