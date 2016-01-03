@@ -14,7 +14,7 @@ throws appropriate errors.
 
 ## Install
 
-```
+```bash
 npm install restberry
 ```
 
@@ -24,7 +24,7 @@ See [``example``](/example) for a detailed documentation of how you setup a Rest
 
 ## Usage
 
-```
+```javascript
 var restberry = require('restberry');
 
 restberry
@@ -66,7 +66,7 @@ All these responses below are automatically handled without needing to write any
 additional code.
 
 * **200** OK
-```
+```bash
 2014-05-11T11:55:53.916Z|172.16.122.129|GET|/api/v1/foos/536f6549e88ad2b5a71ffdc6|<{}>
 2014-05-11T11:55:53.920Z|172.16.122.129|200|<{
   "foo": {
@@ -78,7 +78,7 @@ additional code.
 ```
 
 * **201** CREATED
-```
+```bash
 2014-05-11T11:55:54.210Z|172.16.122.129|POST|/api/v1/foos|<{
   "name": "test"
 }>
@@ -92,7 +92,7 @@ additional code.
 ```
 
 * **204** NO CONTENT
-```
+```bash
 2014-05-11T11:55:52.575Z|172.16.122.129|DELETE|/api/v1/foos/536f6548e88ad2b5a71ffdb7|<{}>
 2014-05-11T11:55:52.579Z|172.16.122.129|204|
 ```
@@ -105,7 +105,7 @@ See [`restberry-passport`](https://github.com/materik/restberry-passport).
 
 ## Routing
 
-```
+```javascript
 restberry.model('Foo')
     .routes
         .addCreateRoute()  // POST /foos
@@ -119,7 +119,7 @@ restberry.model('Foo')
 
 Handle action query strings like this:
 
-```
+```javascript
 restberry.model('Foo')
     .routes
         .addPartialUpdateRoutes({
@@ -133,7 +133,7 @@ restberry.model('Foo')
 
 And Handle parent models like this:
 
-```
+```javascript
 restberry.model('Foo')
     .routes
         .addCreateRoutes({
@@ -145,7 +145,7 @@ restberry.model('Foo')
 
 You can also create custom routes. The possible configurations you can make are:
 
-```
+```javascript
 restberry
     .routes
         .addCustomRoutes({
@@ -173,7 +173,7 @@ you won't be able to override `action` however.
 
 ## Run the tests
 
-```
+```bash
 npm test
 ```
 
