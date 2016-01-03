@@ -1,6 +1,6 @@
 {
    "dependencies": {
-        "restberry": "1.1.x",
+        "restberry": "1.2.x",
         "restberry-mongoose": "3.8.x",
         "underscore": "1.8.x"
     },

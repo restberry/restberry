@@ -25,7 +25,7 @@ Let's start by defining our ``package.json`` file and our dependencies:
 ```
 {
     "dependencies": {
-        "restberry": "1.0.x",
+        "restberry": "1.2.x",
         "restberry-express": "4.12.x",
         "restberry-mongoose": "3.8.x"
     }

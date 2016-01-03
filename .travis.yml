@@ -1,7 +1,7 @@
 language: node_js
 services: mongodb
 node_js:
-  - "0.10"
+  - "5.0.0"
 before_script:
   - "npm install -g forever"
   - "npm install -g nodeunit"

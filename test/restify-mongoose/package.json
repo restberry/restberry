@@ -1,7 +1,7 @@
 {
    "dependencies": {
         "http-status": "0.1.x",
-        "restberry": "1.1.x",
+        "restberry": "1.2.x",
         "restberry-mongoose": "3.8.x",
         "restberry-restify": "3.0.x"
     },
